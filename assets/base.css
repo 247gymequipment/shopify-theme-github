@@ -3976,7 +3976,46 @@ details-disclosure > details {
   .desktop-img { display: none; }
   .mobile-img { display: block; }
 }
+/* ✅ Make slide height work correctly */
+.custom-slide {
+  position: relative;
+  width: 100%;
+  display: none;
+  overflow: hidden;
+}
 
+/* ✅ Force images to fill container */
+.slide-media img,
+.video-media {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ✅ Control height based on settings */
+.custom-slideshow[data-height="small"] .slide-media { height: 40vh; }
+.custom-slideshow[data-height="medium"] .slide-media { height: 60vh; }
+.custom-slideshow[data-height="large"] .slide-media { height: 80vh; }
+
+/* ✅ Mobile override */
+@media (max-width: 749px) {
+  .custom-slideshow[data-height="small"] .slide-media { height: 30vh; }
+  .custom-slideshow[data-height="medium"] .slide-media { height: 50vh; }
+  .custom-slideshow[data-height="large"] .slide-media { height: 70vh; }
+}
+@media screen and (max-width: 767px) {
+    .videoBackground .videoBox {
+        padding: 100px 20px 80px !important;
+    }
+    .videoBackground .fullscreen-video-wrap {
+        position: absolute !important;
+        z-index: 1 !important;
+    }
+    .videoBackground .videoBoxInfo {
+        padding: 10px !important;
+    }
+}
 
 }
 
