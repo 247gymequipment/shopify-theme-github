@@ -3928,7 +3928,19 @@ details-disclosure > details {
   height: 400px !important; /* adjust value */
   max-height: 80vh !important;
 }
+.slideshow__media,
+.slideshow__slide,
+.slideshow {
+  height: 400px !important; /* adjust as needed */
+  max-height: 80vh !important;
 }
+
+.slideshow__media img {
+  height: 100% !important;
+  object-fit: cover !important;
+}
+}
+
 
 
 /* Usage:
