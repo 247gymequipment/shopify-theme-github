@@ -1,7 +1,6 @@
 <style>
 .essential-announcement-bar {
   background-color: #3dbac2;
-  text-align: center;
   padding: 10px;
 }
 
@@ -11,13 +10,14 @@
   line-height: 1.5;
   max-width: 100%;
   word-wrap: break-word;
+  text-align: center;
 }
 
 .links-row {
   display: flex;
   justify-content: center;
-  gap: 15px; /* space between items */
-  flex-wrap: wrap; /* allows wrapping on small screens */
+  gap: 15px;
+  flex-wrap: wrap;
   margin-top: 5px;
 }
 
@@ -38,8 +38,17 @@
   }
 
   .links-row {
-    flex-direction: row; /* still side by side */
-    gap: 10px;
+    justify-content: space-between; /* left and right */
+    gap: 0;
+  }
+
+  .links-row a {
+    flex: 1;
+    text-align: left;
+  }
+
+  .links-row a:last-child {
+    text-align: right;
   }
 }
 </style>
@@ -50,8 +59,8 @@
     <span class="hide-mobile">• ⭐ Trusted by Thousands of Aussie Lifters</span>
 
     <div class="links-row">
-      <a href="https://maps.app.goo.gl/iUGVXvs8zGtTfEePA" target="_blank">📍 Find Us on Google Maps</a>
       <a href="tel:0412 029 000">📞 Call Us: 0412 029 000</a>
+      <a href="https://maps.app.goo.gl/iUGVXvs8zGtTfEePA" target="_blank">📍 Find Us on Google Maps</a>
     </div>
   </div>
 </div>
