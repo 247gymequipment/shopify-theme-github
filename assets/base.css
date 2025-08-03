@@ -3976,6 +3976,19 @@ details-disclosure > details {
   .desktop-img { display: none; }
   .mobile-img { display: block; }
 }
+/* Default aspect ratio for desktop */
+.slide-media::before {
+  content: "";
+  display: block;
+  padding-bottom: 42%; /* Adjust for desktop (e.g., 16:9 ≈ 56%, wider banners ≈ 42%) */
+}
+
+/* Mobile: taller ratio */
+@media (max-width: 749px) {
+  .slide-media::before {
+    padding-bottom: 65%; /* Increase for mobile so the image fills properly */
+  }
+}
 
 }
 
