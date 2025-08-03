@@ -4059,13 +4059,6 @@ details-disclosure > details {
     object-fit: cover !important;
     max-height: 100vh !important;
   }
-  @media screen and (max-width: 768px) {
-  .videoBackground .fullscreen-video-wrap .video-js,
-  .videoBackground .fullscreen-video-wrap video {
-    width: 100% !important;
-    height: 100vh !important;   /* Full viewport height */
-    object-fit: cover !important;
-  }
 }
 
 
