@@ -3771,13 +3771,14 @@ details-disclosure > details {
     overflow: hidden !important;
   }
 
+@media screen and (max-width: 767px) {
   .videoBackground video,
   .videoBackground iframe {
     width: 100% !important;
-    height: auto !important;
-    max-height: 60vh !important;
+    height: 100vh !important;   /* Force full viewport height */
     object-fit: cover !important;
   }
+}
 
   .videoBackground .videoBox {
     padding: 20px 10px !important;
