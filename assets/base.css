@@ -3876,43 +3876,55 @@ details-disclosure > details {
   justify-content: flex-start;
   text-align: left;
 }
-/* ✅ Force full-width responsive slideshow for mobile */
+
+/* ✅ Fix slideshow height & spacing on mobile */
 @media screen and (max-width: 768px) {
-  .slideshow {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-  }
-
-  .slideshow__slide,
-  .slideshow__media {
-    width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
-  }
-
   .slideshow__media img {
-    display: block !important;
+    object-fit: cover !important;
     width: 100% !important;
     height: auto !important;
-    min-height: 250px !important; /* Adjust as needed */
-    object-fit: cover !important;
+    min-height: 250px !important; /* Adjust height */
   }
 
-  /* 🔹 Remove Shopify aspect-ratio padding */
-  .slideshow__media::before,
-  .slideshow__slide::before {
-    content: none !important;
-    display: none !important;
+  .slideshow,
+  .slideshow__slide {
+    max-height: none !important;
+    height: auto !important;
   }
 
-  /* 🔹 Adjust spacing for dots */
+  /* Reduce gap between slideshow and dots */
   .slideshow__controls {
     margin-top: 5px !important;
   }
+}
+.header__heading-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__heading-wrapper--desktop-top {
+  flex-direction: column;
+  align-items: center;
+}
+.header__heading-wrapper--mobile-left {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.header__heading-wrapper--mobile-right {
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-end;
+}
+.header__inline-menu--desktop-center {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.header__inline-menu--mobile-left {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
 }
 
 
