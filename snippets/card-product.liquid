@@ -123,52 +123,7 @@
                 {{ card_product.title | escape }}
               </a>
             </h3>
-          </div>
-            <div class="card__badge {{ settings.badge_position }}">
-            {%- if card_product.available == false -%}
-              <span
-              id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
-              >
-              {{- 'products.product.sold_out' | t -}}
-              </span>
-            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-              <span
-              id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-              >
-              {{- 'products.product.on_sale' | t -}}
-              </span>
-            {%- endif -%}
-
-            {%- if card_product.available == false -%}
-              <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
-              >
-              {{- 'products.product.sold_out' | t -}}
-              </span>
-            {%- elsif card_product.tags contains 'clearance' -%}
-              <span
-              class="badge badge--bottom-left"
-              style="background:#d62828; color:#fff; font-weight:bold;"
-              >
-              Clearance
-              </span>
-            {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-              {% assign saving = card_product.compare_at_price | minus: card_product.price | times: 100 | divided_by: card_product.compare_at_price | round %}
-              <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-              >
-              Save {{ saving }}%
-              </span>
-            {%- endif -%}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card__content">
+</div>
         <div class="card__information">
           <h3
             class="card__heading{% if card_product.featured_media or settings.card_style == 'standard' %} h5{% endif %}"
@@ -573,72 +528,19 @@
             </div>
           {% endif %}
         {% endif %}
-        <div class="card__badge {{ settings.badge_position }}">
-          {%- if card_product.available == false -%}
-            <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
-            >
-              {{- 'products.product.sold_out' | t -}}
-            </span>
-          {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-            <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-            >
-              {{- 'products.product.on_sale' | t -}}
-            </span>
-          {%- endif -%}
+        
 
-          {%- if card_product.available == false -%}
-            <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sold_out_badge_color_scheme }}"
-            >
-              {{- 'products.product.sold_out' | t -}}
-            </span>
-          {%- elsif card_product.tags contains 'clearance' -%}
-            <span
-              class="badge badge--bottom-left"
-              style="background:#d62828; color:#fff; font-weight:bold;"
-            >
-              Clearance
-            </span>
-          {%- elsif card_product.compare_at_price > card_product.price and card_product.available -%}
-            {% assign saving = card_product.compare_at_price | minus: card_product.price | times: 100 | divided_by: card_product.compare_at_price | round %}
-            <span
-              id="Badge-{{ section_id }}-{{ card_product.id }}"
-              class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
-            >
-              Save {{ saving }}%
-            </span>
-          {%- endif -%}
+  {%- if card_product.available == false -%}
+    <span class="badge color-{{ settings.sold_out_badge_color_scheme }}">
+      {{ 'products.product.sold_out' | t }}
+    </span>
+  {%- endif -%}
+</div>
         </div>
         </div>
       </div>
     </div>
-  </div>
-{%- else -%}
-  {%- liquid
-    assign ratio = 1
-    assign placeholder = true
-    if media_aspect_ratio == 'portrait'
-      assign ratio = 0.8
-    endif
-  -%}
-  <div class="card-wrapper product-card-wrapper underline-links-hover">
-    <div
-      class="
-        card card--{{ settings.card_style }}
-        {% if extend_height %} card--extend-height{% endif %}
-        {% if image_shape and image_shape != 'default' %} card--shape{% endif %}
-        {% if settings.card_style == 'card' %} color-{{ settings.card_color_scheme }} gradient{% endif %}
-      "
-      style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
-    >
-      <div
-        class="card__inner{% if settings.card_style == 'standard' %} color-{{ settings.card_color_scheme }} gradient{% endif %} ratio"
-      >
+</div>
         <div
           class="card__media {% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}"
         >
