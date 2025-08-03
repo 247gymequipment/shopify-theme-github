@@ -8,6 +8,58 @@
   --focused--box-shadow: 0 0 0 0.3rem rgb(var(--color-background)), 0 0 0.5rem 0.4rem rgba(var(--color-foreground), 0.3);
 }
 
+/* ✅ MOBILE FIXES FOR ANNOUNCEMENT BAR, SLIDESHOW & VIDEO */
+@media screen and (max-width: 768px) {
+  /* 🔹 Fix Announcement Bar Height */
+  .essential-announcement-bar {
+    padding: 4px 0 !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+  }
+
+  .essential-announcement-bar .announcement-text {
+    white-space: normal !important;
+    display: block !important;
+    text-align: center !important;
+  }
+
+  /* 🔹 Fix Slideshow Size */
+  .slideshow,
+  .slideshow__media,
+  .slideshow__slide {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    max-height: 60vh !important; /* Adjust slideshow height */
+  }
+
+  .slideshow__media img {
+    object-fit: cover !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* 🔹 Fix Video Background Size */
+  .videoBackground {
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .videoBackground video,
+  .videoBackground iframe {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 60vh !important;
+    object-fit: cover !important;
+  }
+
+  .videoBackground .videoBox {
+    padding: 20px 10px !important;
+  }
+}
+
 .product-card-wrapper .card,
 .contains-card--product {
   --border-radius: var(--product-card-corner-radius);
