@@ -3953,11 +3953,10 @@ details-disclosure > details {
   }
 
   /* 🔹 Remove Shopify aspect-ratio padding */
-  .slideshow__media::before,
-  .slideshow__slide::before {
-    content: none !important;
-    display: none !important;
-  }
+.slideshow__media::before,
+.slideshow__slide::before {
+  padding-bottom: 50% !important; /* Adjust ratio: 56.25% = 16:9, 50% = 2:1 */
+}
 
   /* 🔹 Adjust spacing for dots */
   .slideshow__controls {
