@@ -567,49 +567,91 @@
       "info": "t:sections.header.settings.logo_help.content"
     },
     {
-      "type": "select",
-      "id": "mobile_logo_position",
-      "options": [
-        {
-          "value": "center",
-          "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
-        },
-        {
-          "value": "left",
-          "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
-        }
-      ],
-      "default": "center",
-      "label": "t:sections.header.settings.mobile_logo_position.label"
+  "type": "select",
+  "id": "mobile_logo_position",
+  "options": [
+    {
+      "value": "center",
+      "label": "t:sections.header.settings.mobile_logo_position.options__1.label"
     },
     {
-      "type": "link_list",
-      "id": "menu",
-      "default": "main-menu",
-      "label": "t:sections.header.settings.menu.label"
+      "value": "left",
+      "label": "t:sections.header.settings.mobile_logo_position.options__2.label"
+    }
+  ],
+  "default": "center",
+  "label": "t:sections.header.settings.mobile_logo_position.label"
+},
+{
+  "type": "link_list",
+  "id": "menu",
+  "default": "main-menu",
+  "label": "t:sections.header.settings.menu.label"
+},
+{
+  "type": "select",
+  "id": "menu_type_desktop",
+  "options": [
+    {
+      "value": "dropdown",
+      "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
     },
     {
-      "type": "select",
-      "id": "menu_type_desktop",
-      "options": [
-        {
-          "value": "dropdown",
-          "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
-        },
-        {
-          "value": "mega",
-          "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
-        },
-        {
-          "value": "drawer",
-          "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
-        }
-      ],
-      "default": "dropdown",
-      "label": "t:sections.header.settings.menu_type_desktop.label"
+      "value": "mega",
+      "label": "t:sections.header.settings.menu_type_desktop.options__2.label"
     },
     {
-      "type": "select",
+      "value": "drawer",
+      "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
+    }
+  ],
+  "default": "dropdown",
+  "label": "t:sections.header.settings.menu_type_desktop.label"
+},
+{
+  "type": "font_picker",
+  "id": "menu_font",
+  "label": "Menu Font",
+  "default": "helvetica_n4"
+},
+{
+  "type": "color",
+  "id": "menu_font_color",
+  "label": "Menu Font Colour",
+  "default": "#000000"
+},
+{
+  "type": "range",
+  "id": "menu_font_size",
+  "label": "Menu Font Size",
+  "min": 10,
+  "max": 40,
+  "step": 1,
+  "default": 16
+},
+{
+  "type": "select",
+  "id": "menu_alignment",
+  "label": "Menu Alignment",
+  "options": [
+    { "value": "left", "label": "Left" },
+    { "value": "center", "label": "Center" },
+    { "value": "right", "label": "Right" }
+  ],
+  "default": "center"
+},
+{
+  "type": "range",
+  "id": "menu_item_spacing",
+  "label": "Spacing Between Menu Items",
+  "min": 0,
+  "max": 50,
+  "step": 2,
+  "default": 16
+},
+{
+  "type": "select",
+ 
       "id": "sticky_header_type",
       "options": [
         {
