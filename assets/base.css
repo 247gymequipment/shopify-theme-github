@@ -3926,36 +3926,34 @@ details-disclosure > details {
   justify-content: flex-start;
   text-align: left;
 }
-/* ✅ Force full-width responsive slideshow for mobile */
+/* ✅ Fix slideshow height & spacing on mobile */
 @media screen and (max-width: 768px) {
-  .slideshow {
+  .slideshow__media img {
+    object-fit: cover !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 250px !important;
+  }
+
+  .slideshow,
+  .slideshow__slide {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
     padding: 0 !important;
-  }
-
-  .slideshow__slide,
-  .slideshow__media {
-    width: 100% !important;
     height: auto !important;
     max-height: none !important;
-    margin: 0 auto !important;
-    padding: 0 !important;
   }
 
-  .slideshow__media img {
+  .slideshow__media::before,
+  .slideshow__slide::before {
+    padding-bottom: 50% !important; /* Adjust this for your preferred ratio */
     display: block !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 250px !important; /* Adjust as needed */
-    object-fit: cover !important;
   }
 
-  /* 🔹 Remove Shopify aspect-ratio padding */
-.slideshow__media::before,
-.slideshow__slide::before {
-  padding-bottom: 50% !important; /* Adjust ratio: 56.25% = 16:9, 50% = 2:1 */
+  .slideshow__controls {
+    margin-top: 5px !important;
+  }
 }
 
   /* 🔹 Adjust spacing for dots */
