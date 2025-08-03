@@ -4067,10 +4067,6 @@ details-disclosure > details {
     object-fit: cover !important;
     object-position: top center !important; /* Adjust which part of video stays visible */
   }
-}
-
-  
-}
 
 }
 
