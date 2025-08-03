@@ -3912,6 +3912,9 @@ details-disclosure > details {
     object-fit: cover !important;
     min-height: 250px !important; /* Adjust this value */
   }
+  .slideshow__media::before {
+  padding-bottom: var(--ratio-percent);
+}
 }
 
 
