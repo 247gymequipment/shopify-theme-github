@@ -3700,6 +3700,30 @@ details-disclosure > details {
   }
 }
 
+/* ====== LEFT ALIGN MENU ====== */
+@media screen and (min-width: 990px) {
+  .header--middle-left .header__inline-menu {
+    justify-self: start !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* ====== CENTER ALIGN MENU ====== */
+@media screen and (min-width: 990px) {
+  .header--middle-left .header__inline-menu {
+    justify-self: center !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* ====== RIGHT ALIGN MENU ====== */
+@media screen and (min-width: 990px) {
+  .header--middle-left .header__inline-menu {
+    justify-self: end !important;
+    margin-right: 0 !important;
+  }
+}
+
 /* Usage:
    - Add the relevant utility class to your header or menu container for alignment.
    - Example: <div class="header__heading-wrapper header__heading-wrapper--desktop-top header__heading-wrapper--mobile-left">
