@@ -4044,6 +4044,13 @@ details-disclosure > details {
     height: auto;
     object-fit: cover; /* Fills width, auto adjusts height */
   }
+}@media (max-width: 749px) {
+  .video-js {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 100vh !important;
+    object-fit: cover !important;
+  }
 }
 
 }
