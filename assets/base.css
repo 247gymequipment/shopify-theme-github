@@ -3939,6 +3939,20 @@ details-disclosure > details {
   height: 100% !important;
   object-fit: cover !important;
 }
+.custom-slide {
+  position: relative;
+  width: 100%;
+  display: none;
+  transition: opacity 1s ease;
+}
+
+.custom-slide img,
+.custom-slide .slide-media {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 }
 
 
