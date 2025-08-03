@@ -1,1 +1,95 @@
-{"name":"t:sections.footer.name","type":"footer","sections":{"17536258779964c8d9":{"type":"apps","settings":{"include_margins":true}},"footer":{"type":"footer","blocks":{"2107f7ff-a5b0-4f09-879c-92e113c4818d":{"type":"link_list","settings":{"heading":"<a href=\"https:\/\/247gymequipment.com.au\/pages\/product-care-guide\" title=\"https:\/\/247gymequipment.com.au\/pages\/product-care-guide\">SUPPORT<\/a>","menu":"footer"}},"bef757ad-59a0-418f-9fb6-29b40f53816d":{"type":"brand_information","disabled":true,"settings":{"show_social":true}},"link_list_6HiJU4":{"type":"link_list","settings":{"heading":"Our Services","menu":"customer-account-main-menu"}},"link_list_A33exj":{"type":"link_list","settings":{"heading":"Delivery & Pick‑Up","menu":"depots-and-delivery"}},"37310bad-7a7d-49ff-93d3-24442adc6638":{"type":"text","disabled":true,"settings":{"heading":"<strong>TRADING HOURS<\/strong>","subtext":"<p><br\/><\/p><p><\/p>"}},"82acd742-7f8b-4a81-b93a-4286851c40cc":{"type":"text","settings":{"heading":"CONTACT US","subtext":"<p><\/p><p><strong>Email:<\/strong><\/p><p><a href=\"mailto:sales@247gymequipment.com.au\" title=\"mailto:sales@247gymequipment.com.au\">sales@247gymequipment.com.au<\/a><\/p><p><strong>Phone : <\/strong><\/p><p><a href=\"tel:+61412029000\" title=\"tel:+61412029000\">0412 029 000<\/a><\/p><p><strong>Address : <\/strong><\/p><p><a href=\"https:\/\/maps.app.goo.gl\/SxZ6iLpcF23c9tRCA\" target=\"_blank\" title=\"https:\/\/maps.app.goo.gl\/SxZ6iLpcF23c9tRCA\">Unit 10, 202 Milperra Rd, Milperra NSW 2214<\/a> <\/p><p><strong>Trading Hours: <\/strong><\/p><p>Monday - Friday : 9am-5pm<br\/>Saturday - Sunday : Closed<\/p><p><strong>ABN : <\/strong><\/p><p> 51 680 765 780<br\/><br\/><\/p>"}}},"block_order":["2107f7ff-a5b0-4f09-879c-92e113c4818d","bef757ad-59a0-418f-9fb6-29b40f53816d","link_list_6HiJU4","link_list_A33exj","37310bad-7a7d-49ff-93d3-24442adc6638","82acd742-7f8b-4a81-b93a-4286851c40cc"],"settings":{"color_scheme":"accent-1","newsletter_enable":true,"newsletter_heading":"Subscribe to our emails","enable_follow_on_shop":true,"show_social":true,"enable_country_selector":true,"enable_language_selector":true,"payment_enable":true,"show_policy":false,"margin_top":0,"padding_top":80,"padding_bottom":52}}},"order":["17536258779964c8d9","footer"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "17536258779964c8d9": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "2107f7ff-a5b0-4f09-879c-92e113c4818d": {
+          "type": "link_list",
+          "settings": {
+            "heading": "<a href=\"https://247gymequipment.com.au/pages/product-care-guide\" title=\"https://247gymequipment.com.au/pages/product-care-guide\">SUPPORT</a>",
+            "menu": "footer"
+          }
+        },
+        "bef757ad-59a0-418f-9fb6-29b40f53816d": {
+          "type": "brand_information",
+          "disabled": true,
+          "settings": {
+            "show_social": true
+          }
+        },
+        "link_list_6HiJU4": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Our Services",
+            "menu": "customer-account-main-menu"
+          }
+        },
+        "link_list_A33exj": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Delivery & Pick‑Up",
+            "menu": "depots-and-delivery"
+          }
+        },
+        "37310bad-7a7d-49ff-93d3-24442adc6638": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "heading": "<strong>TRADING HOURS</strong>",
+            "subtext": "<p><br/></p><p></p>"
+          }
+        },
+        "82acd742-7f8b-4a81-b93a-4286851c40cc": {
+          "type": "text",
+          "settings": {
+            "heading": "CONTACT US",
+            "subtext": "<p></p><p><strong>Email:</strong></p><p><a href=\"mailto:sales@247gymequipment.com.au\" title=\"mailto:sales@247gymequipment.com.au\">sales@247gymequipment.com.au</a></p><p><strong>Phone : </strong></p><p><a href=\"tel:+61412029000\" title=\"tel:+61412029000\">0412 029 000</a></p><p><strong>Address : </strong></p><p><a href=\"https://maps.app.goo.gl/SxZ6iLpcF23c9tRCA\" target=\"_blank\" title=\"https://maps.app.goo.gl/SxZ6iLpcF23c9tRCA\">Unit 10, 202 Milperra Rd, Milperra NSW 2214</a> </p><p><strong>Trading Hours: </strong></p><p>Monday - Friday : 9am-5pm<br/>Saturday - Sunday : Closed</p><p><strong>ABN : </strong></p><p> 51 680 765 780<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "2107f7ff-a5b0-4f09-879c-92e113c4818d",
+        "bef757ad-59a0-418f-9fb6-29b40f53816d",
+        "link_list_6HiJU4",
+        "link_list_A33exj",
+        "37310bad-7a7d-49ff-93d3-24442adc6638",
+        "82acd742-7f8b-4a81-b93a-4286851c40cc"
+      ],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "newsletter_enable": true,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_policy": false,
+        "margin_top": 0,
+        "padding_top": 80,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "17536258779964c8d9",
+    "footer"
+  ]
+}
