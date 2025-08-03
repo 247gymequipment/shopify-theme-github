@@ -3814,6 +3814,17 @@ details-disclosure > details {
     background-color: #61c5c6 !important;
     margin-top: 0 !important;
   }
+
+.clearance-badge {
+  background-color: #ff4b2b;
+  top: 5px; /* Moves higher above image */
+}
+
+.save-badge {
+  background-color: #61c5c6;
+  top: 38px; /* Position just below clearance */
+}
+
 }
 
 
