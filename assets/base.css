@@ -79,6 +79,38 @@
   --color-button: var(--color-background);
   --alpha-button-background: 1;
 }
+/* Fix: Ensure custom badges show above product images on mobile */
+@media (max-width: 768px) {
+  .custom-badge {
+    position: absolute !important;
+    left: 8px !important;
+    font-size: 12px !important;
+    padding: 5px 10px !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+    display: block !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    color: #fff !important;
+    background-color: inherit !important; /* Will be overridden below */
+    max-width: 80vw !important;
+    min-width: 60px !important;
+    width: max-content !important;
+    box-sizing: border-box !important;
+    margin-bottom: 6px !important;
+    white-space: nowrap !important;
+  }
+  .clearance-badge {
+    top: 8px !important;
+    background-color: #ff4b2b !important;
+    margin-top: 0 !important;
+  }
+  .save-badge {
+    top: 36px !important;
+    background-color: #61c5c6 !important;
+    margin-top: 0 !important;
+  }
+}
 
 .color-background-2 .button--secondary,
 .color-accent-1 .button--secondary,
