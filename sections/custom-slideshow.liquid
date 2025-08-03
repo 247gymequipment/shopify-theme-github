@@ -3,14 +3,8 @@ Custom Advanced Slideshow – With desktop+mobile images, video, overlay, button
 {% endcomment %}
 
 <section 
-  class="custom-slideshow custom-slideshow--{{ section.settings.layout }} custom-slideshow--{{ section.settings.slide_height }}" 
-  data-pagination="{{ section.settings.pagination_style }}"
-  data-auto-rotate="{{ section.settings.auto_rotate }}"
-  data-speed="{{ section.settings.change_slides_speed }}"
-  data-image-behavior="{{ section.settings.image_behavior }}"
-  tabindex="0" 
-  aria-keyshortcuts="ArrowLeft ArrowRight"
->
+  id="CustomSlideshow-{{ section.id }}" 
+  class="custom-slideshow layout-{{ section.settings.layout }} height-{{ section.settings.slide_height }}">
   
   <div class="custom-slideshow-wrapper">
     {% for block in section.blocks %}
