@@ -3907,7 +3907,12 @@ details-disclosure > details {
     max-height: 95vh;
   }
 }
-
+@media screen and (max-width: 768px) {
+  .slideshow__media img {
+    object-fit: cover !important;
+    min-height: 250px !important; /* Adjust this value */
+  }
+}
 
 
 /* Usage:
