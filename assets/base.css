@@ -4034,7 +4034,17 @@ details-disclosure > details {
     object-fit: contain; /* Prevents zoom/crop */
   }
 }
+@media (max-width: 749px) {
+  .video-section {
+    height: auto;
+  }
 
+  .video-section .video-bg {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Fills width, auto adjusts height */
+  }
+}
 
 }
 
