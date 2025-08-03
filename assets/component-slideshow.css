@@ -4,17 +4,12 @@ slideshow-component {
   flex-direction: column;
 }
 
-@media screen and (max-width: 989px) {
-  .no-js slideshow-component .slider {
-    padding-bottom: 3rem;
-  }
-}
-
 slideshow-component .slideshow.banner {
   flex-direction: row;
   flex-wrap: nowrap;
   margin: 0;
   gap: 0;
+  overflow-y: hidden;
 }
 
 .slideshow__slide {
@@ -22,6 +17,7 @@ slideshow-component .slideshow.banner {
   position: relative;
   display: flex;
   flex-direction: column;
+  visibility: visible;
 }
 
 @media screen and (max-width: 749px) {
@@ -92,7 +88,6 @@ slideshow-component .slideshow.banner {
     text-align: right;
   }
 }
-
 
 .slideshow:not(.banner--mobile-bottom) .slideshow__text-wrapper {
   height: 100%;
@@ -189,12 +184,12 @@ slideshow-component:not(.page-width) .slider-buttons {
 
 @media screen and (forced-colors: active) {
   .slideshow__autoplay path,
-  .slideshow__autoplay:hover path{
+  .slideshow__autoplay:hover path {
     fill: CanvasText;
   }
 }
 
-.slideshow__autoplay:hover svg {
+.slideshow__autoplay:hover .svg-wrapper {
   transform: scale(1.1);
 }
 
@@ -202,132 +197,5 @@ slideshow-component:not(.page-width) .slider-buttons {
 .slideshow__autoplay:not(.slideshow__autoplay--paused) .icon-play {
   visibility: hidden;
   opacity: 0;
-  transform: scale(.8)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* === FINAL UNIVERSAL FIX for SLIDESHOW === */
-.slideshow__media,
-.banner__media {
-  width: 100%;
-  aspect-ratio: 2.68 / 1; /* Adjust based on your image (e.g. 1920x716) */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.slideshow__slide {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-
-.slideshow__media img,
-.banner__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-
-
-
-
-/* === CLEAN MOBILE FIX: Keep button inside image === */
-@media screen and (max-width: 749px) {
-  .slideshow__media {
-    aspect-ratio: 1 / 1 !important;
-    height: auto !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    position: relative;
-  }
-
-  .slideshow__media img {
-    display: none !important;
-  }
-
-  .slideshow__slide {
-    position: relative;
-    height: auto !important;
-    overflow: hidden;
-  }
-
-  .slideshow__text-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0 1rem !important;
-    margin: 0 auto !important;
-    text-align: center;
-    width: 100%;
-    z-index: 2;
-  }
-
-  .slideshow__text.banner__box {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: rgba(0, 0, 0, 0.5); /* optional background for readability */
-    color: white;
-  }
-
-  .slideshow__text .button {
-    margin-top: 1rem;
-    max-width: 80%;
-  }
-
-  .slider-buttons,
-  .slideshow__controls--border-radius-mobile {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-  }
-}
-
-/* Remove extra gap between image and slider controls */
-#Slider-{{ section.id }}::before,
-#Slider-{{ section.id }} .media::before {
-  display: none !important;
-  padding: 0 !important;
-  content: none !important;
-}
-
-.slideshow__text-wrapper:empty {
-  display: none !important;
-  height: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.slideshow__media-link {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: block;
-}
-
-.slideshow__media {
-  position: relative;
-  z-index: 0;
-}
-
-.slideshow__text-wrapper {
-  position: relative;
-  z-index: 2;
+  transform: scale(0.8);
 }

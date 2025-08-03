@@ -1,0 +1,231 @@
+<style>
+  html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#MainContent,
+.content-for-layout,
+.template-index .shopify-section:first-of-type {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.shopify-section:first-of-type {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+  
+  .essential-announcement-bar {
+    background-color: #3dbac2;
+    text-align: center;
+    padding: 0px;
+    margin: 0;
+  }
+
+  .announcement-text {
+    font-size: 14px;
+    color: white;
+    line-height: 1.5;
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+
+  .announcement-text a {
+    color: #ffffff;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  .custom-header-wrapper {
+    position: {{ section.settings.sticky_header | default: "sticky" }};
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: {{ section.settings.header_bg }};
+    box-shadow: {{ section.settings.enable_shadow | default: true | if: '0 2px 6px rgba(0,0,0,0.1)', else: 'none' }};
+    margin: 0;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .custom-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-left: {{ section.settings.padding_left }}px;
+    padding-right: {{ section.settings.padding_right }}px;
+  }
+
+  .custom-logo img {
+    max-height: {{ section.settings.logo_height }}px;
+  }
+
+  nav ul.custom-nav {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .custom-nav > li {
+    position: relative;
+    margin: 0 {{ section.settings.menu_spacing }}px;
+  }
+
+  .custom-nav > li > a {
+    text-decoration: none;
+    font-weight: 600;
+    color: {{ section.settings.menu_text_color }};
+    font-size: {{ section.settings.menu_font_size }}px;
+    padding: 5px 0;
+  }
+
+  .mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 900px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    z-index: 9999;
+  }
+
+  .custom-nav > li:hover .mega-menu {
+    display: grid;
+  }
+
+  .header-icons {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-icons a {
+    margin-left: 15px;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+  .mobile-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 28px;
+    margin-left: 15px;
+  }
+
+  .mobile-nav {
+    display: none;
+    background: #fff;
+    padding: 10px;
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+
+  @media(max-width: 900px) {
+    nav ul.custom-nav { display: none; }
+    .mobile-toggle { display: block; }
+  }
+</style>
+
+<div class="essential-announcement-bar">
+  <div class="announcement-text">
+    🚚 Fast Delivery Across Australia • 💪 Premium Gym Equipment for Home & Commercial Use • ⭐ Trusted by Thousands of Aussie Lifters
+    <a href="https://maps.app.goo.gl/iUGVXvs8zGtTfEePA" target="_blank">📍 Find Us on Google Maps</a>
+    <a href="tel:0412029000">📞 Call Us: 0412 029 000</a>
+  </div>
+</div>
+
+<div class="custom-header-wrapper">
+  <div class="custom-header-inner">
+    <div class="custom-logo">
+      <a href="{{ routes.root_url }}">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}">
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
+      </a>
+    </div>
+
+    <nav>
+      <ul class="custom-nav">
+        {% for link in linklists[section.settings.menu].links %}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+            {% if link.links != blank %}
+              <div class="mega-menu">
+                {% for child in link.links %}
+                  <div>
+                    <h4>{{ child.title }}</h4>
+                    {% if child.links != blank %}
+                      <ul>
+                        {% for sublink in child.links %}
+                          <li><a href="{{ sublink.url }}">{{ sublink.title }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="header-icons">
+      <a href="/account">👤</a>
+      <a href="/cart">🛒{% if cart.item_count > 0 %}<span>({{ cart.item_count }})</span>{% endif %}</a>
+      <span class="mobile-toggle">☰</span>
+    </div>
+  </div>
+
+  <div class="mobile-nav">
+    <ul>
+      {% for link in linklists[section.settings.menu].links %}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<script>
+  document.querySelector(".mobile-toggle").addEventListener("click", () => {
+    document.querySelector(".mobile-nav").classList.toggle("open");
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Mega Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "color", "id": "header_bg", "label": "Header Background", "default": "#ffffff" },
+    { "type": "range", "id": "logo_height", "label": "Logo Height", "min": 20, "max": 120, "step": 5, "default": 55 },
+    { "type": "range", "id": "menu_font_size", "label": "Menu Font Size", "min": 12, "max": 30, "step": 1, "default": 16 },
+    { "type": "color", "id": "menu_text_color", "label": "Menu Text Colour", "default": "#333333" },
+    { "type": "range", "id": "menu_spacing", "label": "Menu Item Spacing", "min": 5, "max": 50, "step": 1, "default": 15 },
+    { "type": "range", "id": "padding_top", "label": "Header Padding Top", "min": 0, "max": 50, "step": 1, "default": 5 },
+    { "type": "range", "id": "padding_bottom", "label": "Header Padding Bottom", "min": 0, "max": 50, "step": 1, "default": 5 },
+    { "type": "range", "id": "padding_left", "label": "Header Padding Left", "min": 0, "max": 50, "step": 1, "default": 20 },
+    { "type": "range", "id": "padding_right", "label": "Header Padding Right", "min": 0, "max": 50, "step": 1, "default": 20 },
+    { "type": "range", "id": "max_width", "label": "Max Header Width (px)", "min": 800, "max": 1800, "step": 50, "default": 1300 },
+    { "type": "select", "id": "sticky_header", "label": "Header Position", "options": [
+      { "value": "sticky", "label": "Sticky" },
+      { "value": "fixed", "label": "Fixed" },
+      { "value": "relative", "label": "Normal" }
+    ], "default": "sticky" },
+    { "type": "checkbox", "id": "enable_shadow", "label": "Enable Header Shadow", "default": true }
+  ]
+}
+{% endschema %}

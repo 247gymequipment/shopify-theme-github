@@ -4,74 +4,88 @@
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    padding-left: {{ section.settings.side_padding | times: 1 | round: 0 }}px;
-    padding-right: {{ section.settings.side_padding | times: 1 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
-      padding-left: {{ section.settings.side_padding }}px;
-      padding-right: {{ section.settings.side_padding }}px;
     }
   }
 {%- endstyle -%}
 
-<div class="color-background gradient section-{{ section.id }}-padding"
-     style="background-color: {{ section.settings.background_color }}; text-align: {{ section.settings.content_alignment }};">
-
-  <div class="{% if section.settings.full_width %}page-width{% else %}page-width page-width--narrow{% endif %}">
-    <h2 class="page-title">{{ section.settings.page.title }}</h2>
-<div class="rte">
-  {{ section.settings.page.content }}
-</div>
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {%- if section.settings.page.title != blank -%}
+        {{ section.settings.page.title | escape }}
+      {%- else -%}
+        {{ 'sections.page.title' | t }}
+      {%- endif -%}
+    </h2>
+    <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {%- if section.settings.page.content != blank -%}
+        {{ section.settings.page.content }}
+      {%- else -%}
+        <div class="page-placeholder-wrapper placeholder">
+          {{ 'page' | placeholder_svg_tag: 'page-placeholder' }}
+        </div>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Custom Page Section",
+  "name": "t:sections.page.name",
   "tag": "section",
   "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
       "type": "page",
       "id": "page",
-      "label": "Select Page"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Colour",
-      "default": "#ffffff"
+      "label": "t:sections.page.settings.page.label"
     },
     {
       "type": "select",
-      "id": "content_alignment",
-      "label": "Text Alignment",
+      "id": "heading_size",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
       ],
-      "default": "left"
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
     },
     {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Make Content Full Width",
-      "default": true
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
     },
     {
-      "type": "range",
-      "id": "side_padding",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Side Padding (Left & Right)",
-      "default": 40
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
@@ -80,7 +94,7 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Top",
+      "label": "t:sections.all.padding.padding_top",
       "default": 36
     },
     {
@@ -90,13 +104,13 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Bottom",
+      "label": "t:sections.all.padding.padding_bottom",
       "default": 36
     }
   ],
   "presets": [
     {
-      "name": "Custom Page Section"
+      "name": "t:sections.page.presets.name"
     }
   ]
 }

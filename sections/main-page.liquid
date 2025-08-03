@@ -14,65 +14,24 @@
   }
 {%- endstyle -%}
 
-<div class="color-background gradient"
-     style="background-color: {{ section.settings.background_color }}; 
-            padding-top: {{ section.settings.padding_top }}px; 
-            padding-bottom: {{ section.settings.padding_bottom }}px;">
-
-  <div class="{% if section.settings.full_width %}page-width{% else %}page-width page-width--narrow{% endif %}" 
-     style="text-align: {{ section.settings.content_alignment }}; 
-            padding-left: {{ section.settings.side_padding | default: 20 }}px; 
-            padding-right: {{ section.settings.side_padding | default: 20 }}px;">
-       
-    <h2 class="page-title">{{ page.title }}</h2>
-    <div class="rte">{{ page.content }}</div>
-    
+<div class="page-width page-width--narrow section-{{ section.id }}-padding">
+  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {{ page.title | escape }}
+  </h1>
+  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    {{ page.content }}
   </div>
 </div>
 
-
 {% schema %}
 {
-  "name": "Custom Page Section",
+  "name": "t:sections.main-page.name",
   "tag": "section",
   "class": "section",
   "settings": [
     {
       "type": "header",
-      "content": "Page Layout Settings"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Colour",
-      "default": "#ffffff"
-    },
-    {
-      "type": "select",
-      "id": "content_alignment",
-      "label": "Text Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Make Content Full Width",
-      "default": true
-    },
-        {
-      "type": "range",
-      "id": "side_padding",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Side Padding (Left & Right)",
-      "default": 20
+      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
       "type": "range",
@@ -81,7 +40,7 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Top",
+      "label": "t:sections.all.padding.padding_top",
       "default": 36
     },
     {
@@ -91,13 +50,8 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Padding Bottom",
+      "label": "t:sections.all.padding.padding_bottom",
       "default": 36
-    }
-  ],
-  "presets": [
-    {
-      "name": "Custom Page Section"
     }
   ]
 }

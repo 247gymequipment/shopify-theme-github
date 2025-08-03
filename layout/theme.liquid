@@ -1,48 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html class="js" lang="{{ request.locale.iso_code }}">
   <head>
-    <!-- Microsoft Conversion tracking -->
-
-    <script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"97169307", enableAutoSpaTracking: true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
-<!-- End Microsoft Conversion tracking -->
-    <script>
-   // Add this script right after your base UET tag code
-   window.uetq = window.uetq || [];
-   window.uetq.push('set', { 'pid': { 
-      'em': 'sales@247gymequipment.com.au', // Replace with the variable that holds the user's email address. 
-      'ph': '+61412029000', // Replace with the variable that holds the user's phone number. 
-   } });
-</script>
-
-    <meta name="keywords" content="gym equipment, home gym, commercial gym, barbells, dumbbells, squat racks, weight plates, fitness gear, strength training">
-<meta name="referrer" content="strict-origin-when-cross-origin">
-
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-KT955VZK');</script>
-<!-- End Google Tag Manager -->
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3647205450427351"
-     crossorigin="anonymous"></script>
-    
- {%- render 'ecom_header' -%}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { prefix: 'tw-' }</script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -68,14 +31,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
 
-    
-    <script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"97169307"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
-    
-    
-    
-    
-    {%- if tinyscript -%}{{ content_for_header }}{%- else -%}{% render 'tiny-script-control' %}{%- endif -%}
+    {%- if settings.animations_reveal_on_scroll -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {{ content_for_header }}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
@@ -90,6 +54,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
+      {% for scheme in settings.color_schemes -%}
+        {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
+        {% if forloop.index == 1 -%}
+          :root,
+        {%- endif %}
+        .color-{{ scheme.id }} {
+          --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
+        {% if scheme.settings.background_gradient != empty %}
+          --gradient-background: {{ scheme.settings.background_gradient }};
+        {% else %}
+          --gradient-background: {{ scheme.settings.background }};
+        {% endif %}
+
+        {% liquid
+          assign background_color = scheme.settings.background
+          assign background_color_brightness = background_color | color_brightness
+          if background_color_brightness <= 26
+            assign background_color_contrast = background_color | color_lighten: 50
+          elsif background_color_brightness <= 65
+            assign background_color_contrast = background_color | color_lighten: 5
+          else
+            assign background_color_contrast = background_color | color_darken: 25
+          endif
+        %}
+
+        --color-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
+        --color-background-contrast: {{ background_color_contrast.red }},{{ background_color_contrast.green }},{{ background_color_contrast.blue }};
+        --color-shadow: {{ scheme.settings.shadow.red }},{{ scheme.settings.shadow.green }},{{ scheme.settings.shadow.blue }};
+        --color-button: {{ scheme.settings.button.red }},{{ scheme.settings.button.green }},{{ scheme.settings.button.blue }};
+        --color-button-text: {{ scheme.settings.button_label.red }},{{ scheme.settings.button_label.green }},{{ scheme.settings.button_label.blue }};
+        --color-secondary-button: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
+        --color-secondary-button-text: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
+        --color-link: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
+        --color-badge-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
+        --color-badge-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
+        --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
+        --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
+      }
+      {% endfor %}
+
+      {{ scheme_classes | prepend: 'body' }} {
+        color: rgba(var(--color-foreground), 0.75);
+        background-color: rgb(var(--color-background));
+      }
+
       :root {
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
         --font-body-style: {{ settings.type_body_font.style }};
@@ -102,21 +111,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-
-        --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
-        --color-shadow: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
-        --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
-        --color-base-background-2: {{ settings.colors_background_2.red }}, {{ settings.colors_background_2.green }}, {{ settings.colors_background_2.blue }};
-        --color-base-solid-button-labels: {{ settings.colors_solid_button_labels.red }}, {{ settings.colors_solid_button_labels.green }}, {{ settings.colors_solid_button_labels.blue }};
-        --color-base-outline-button-labels: {{ settings.colors_outline_button_labels.red }}, {{ settings.colors_outline_button_labels.green }}, {{ settings.colors_outline_button_labels.blue }};
-        --color-base-accent-1: {{ settings.colors_accent_1.red }}, {{ settings.colors_accent_1.green }}, {{ settings.colors_accent_1.blue }};
-        --color-base-accent-2: {{ settings.colors_accent_2.red }}, {{ settings.colors_accent_2.green }}, {{ settings.colors_accent_2.blue }};
-        --payment-terms-background-color: {{ settings.colors_background_1 }};
-
-        --gradient-base-background-1: {% if settings.gradient_background_1 != blank %}{{ settings.gradient_background_1 }}{% else %}{{ settings.colors_background_1 }}{% endif %};
-        --gradient-base-background-2: {% if settings.gradient_background_2 != blank %}{{ settings.gradient_background_2 }}{% else %}{{ settings.colors_background_2 }}{% endif %};
-        --gradient-base-accent-1: {% if settings.gradient_accent_1 != blank %}{{ settings.gradient_accent_1 }}{% else %}{{ settings.colors_accent_1 }}{% endif %};
-        --gradient-base-accent-2: {% if settings.gradient_accent_2 != blank %}{{ settings.gradient_accent_2 }}{% else %}{{ settings.colors_accent_2 }}{% endif %};
 
         --media-padding: {{ settings.media_padding }}px;
         --media-border-opacity: {{ settings.media_border_opacity | divided_by: 100.0 }};
@@ -228,31 +222,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
       }
 
-      [x-cloak] { display: none !important; }
-
-      .videoBoxInfoTitle {
-        line-height: 40px!important;
-        font-size: 45px!important;
-      }
-      .videoBoxInfoBtn {
-        margin-top: 10px!important;
-      }
-      .imageBoxInfoDescription h6 {
-        color: #fff!important;
-      }
-      .videoBackground .videoBox {
-        min-height:none!important;
-      }
-      .videoBoxInfo{
-        margin-top:10px!important;
-      }
-
-      
-        button.shopify-payment-button__button--unbranded { border-radius: 9999px!important; }
-
-      button.shopify-payment-button__button--unbranded:hover::after { border-radius: 9999px!important; }
-      button.shopify-payment-button__button--unbranded:focus { border-radius: 9999px!important; }
-
       *,
       *::before,
       *::after {
@@ -283,138 +252,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         body {
           font-size: 1.6rem;
         }
-
-
-        @font-face {
-  font-family: 'Inter';
-  src: url('{{ 'Inter.ttf' | asset_url }}') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-        
-      
       }
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {%- unless settings.type_body_font.system? -%}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-    {%- endunless -%}
-
-    {%- if settings.predictive_search_enabled -%}
-      <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+    {%- if settings.cart_type == 'drawer' -%}
+      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+      {{ 'component-price.css' | asset_url | stylesheet_tag }}
+      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
-    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-    if (Shopify.designMode) {
-      document.documentElement.classList.add('shopify-design-mode');
-    }
+    {%- unless settings.type_body_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%}
+    {%- unless settings.type_header_font.system? -%}
+      {% comment %}theme-check-disable AssetPreload{% endcomment %}
+      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+    {%- endunless -%}
+
+    {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+      {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
+      <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.predictive_search_enabled -%}
+      <link
+        rel="stylesheet"
+        href="{{ 'component-predictive-search.css' | asset_url }}"
+        media="print"
+        onload="this.media='all'"
+      >
+    {%- endif -%}
+
+    <script>
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
     </script>
-     
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
- 
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "p6lz3qff47");
-</script>
-  {% include 'pagefly-app-header' %}
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Pro Gear Fitness T/As 24/7 Gym Equipment",
-  "url": "https://247gymequipment.com.au",
-  "logo": "https://cdn.shopify.com/s/files/1/0756/3201/7681/files/247_gym_equipment.png?v=1746965546",
-  "sameAs": [
-    "https://www.facebook.com/247gymequipemt",
-    "https://www.instagram.com/247gymequipment"
-  ],
-  "contactPoint": [
-    {
-      "@type": "ContactPoint",
-      "telephone": "+61-412-029-000",
-      "contactType": "customer service"
-    },
-    {
-      "@type": "ContactPoint",
-      "telephone": "+61-412-029-000",
-      "contactType": "sales"
-    }
-  ]
-}
-</script>
-
-
-    
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SportingGoodsStore",
-  "name": "24/7 Gym Equipment",
-  "image": "https://cdn.shopify.com/s/files/1/0756/3201/7681/files/247_gym_equipment.png?v=1746965546",
-  "url": "https://247gymequipment.com.au",
-  "priceRange": "$10 - $10,000",
-  "telephone": "+61-412-029-000",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Unit 10, 202 Milperra Road",
-    "addressLocality": "Milperra",
-    "addressRegion": "NSW",
-    "postalCode": "2214",
-    "addressCountry": "AU"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": -33.92964172363281,
-    "longitude": 150.98193359375
-  },
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday"
-      ],
-      "opens": "09:00",
-      "closes": "17:00"
-    }
-  ],
-  "hasMap": "https://maps.app.goo.gl/Bd2tX6oUogXWCwu48"
-}
-</script>
-
-<script>
-fetch("https://ipapi.co/json/")
-  .then(response => response.json())
-  .then(data => {
-    if (["HK"].includes(data.country)) {
-      window.location.href = "https://www.google.com"; // Replace with your custom blocked page if needed
-    }
-  });
-</script>
-
-
-
-  
   </head>
 
-  <body class="gradient">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
-      {{ "accessibility.skip_to_text" | t }}
+      {{ 'accessibility.skip_to_text' | t }}
     </a>
 
     {%- if settings.cart_type == 'drawer' -%}
@@ -423,202 +309,9 @@ fetch("https://ipapi.co/json/")
 
     {% sections 'header-group' %}
 
-    {% if template == 'index' %}
-     
-{% endif %}
-
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
-
-        {% if template == 'iindex' %}
-      <section class="tw-bg-white tw-w-full tw-h-full tw-mt-52">
-    <div x-data="{loading:true,front:false,back:false,part:''}"  x-init="setTimeout(() => (loading=false,front=true), 500)" class="tw-mx-auto tw-flex tw-flex-col tw-items-center tw-justify-center tw-w-full">
-
-    <div class="tw-relative tw-flex tw-flex-row tw-items-center tw-justify-center tw-min-h-[484px] tw-w-96">
-      <svg class="tw-z-[1] tw-top-8 tw-right-60 tw-h-20 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Neck & Traps'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" viewBox="0 0 296 95"><text transform="translate(70.9 31)">Neck &amp; Traps</text><g><path d="M102.6 42.6 136 91M135.7 90H296" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-4 -tw-right-16 tw-h-32 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Shoulders'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" viewBox="0 0 200 153"><text transform="translate(-1.512 32.1)">Shoulders</text><g><path d="m76.6 43-3 77M73.6 120 8.5 152.1" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-32 -tw-right-10 tw-h-20 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Biceps'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" style="enable-background:new 0 0 126.2 101" viewBox="0 0 150 101"><text transform="translate(41 26.535)">Biceps</text><g><path d="M78.7 38.4 64.8 81M64.8 81l-63 16" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-[17rem] -tw-right-28 tw-h-4 tw-text-6xl tw-font-bold tw-fill-teal-500" :class="part=='Forearms'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 256 25.9"><text transform="translate(48.704 25.567)">Forearms</text><path d="M35 17.7.1 17.5" class="tw-stroke-teal-500 tw-stroke-2"/></svg>
-      <svg class="tw-z-[1] tw-top-[27rem] -tw-left-8 tw-h-28 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Legs-Quads'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 211 145.5"><text transform="translate(3 137.975)">Legs-Quads</text><g><path d="M118.5 22.1 87.8 92.7M211.5 2.2l-93 19.9" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-64 tw-left-[4.4rem] tw-h-28 tw-text-7xl tw-font-bold tw-fill-teal-500" :class="part=='Abs'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 195.1 221"><text transform="translate(-.9 216.5)">Abs</text><g><path d="m72.1 58-37 119M190.1 2.1 72.1 58" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-40 -tw-left-20 tw-h-6 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Chest'?'tw-absolute':'tw-absolute'" x-show="front" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 220 25.9"><text transform="translate(80 25.567)">Chest</text><path d="m220 18.5-50.9-1" class="tw-stroke-teal-500 tw-stroke-2"/></svg>
-
-      <svg class="tw-z-[1] tw-top-10 tw-right-[15rem] tw-h-[3.8rem] tw-text-6xl tw-font-bold tw-fill-teal-500" :class="part=='BNeck & Traps'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" viewBox="0 0 296 95"><text transform="translate(1.9 31)">Neck &amp; Traps</text><g><path d="M102.6 42.6 136 91M135.7 90H296" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-0 -tw-right-[3rem] tw-h-32 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='BShoulders'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" viewBox="0 0 200 153"><text transform="translate(-1.512 32.1)">Shoulders</text><g><path d="m76.6 43-3 77M73.6 120 8.5 152.1" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-[7rem] -tw-right-8 tw-h-20 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Triceps'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" x-cloak xml:space="preserve" style="enable-background:new 0 0 126.2 101" viewBox="0 0 150 101"><text transform="translate(41 26.535)">Triceps</text><g><path d="M78.7 38.4 64.8 81M64.8 81l-63 16" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-72 -tw-right-[9.5rem] tw-h-5 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='BForearms'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 256 25.9"><text transform="translate(48.704 25.567)">Forearms</text><path d="M35 17.7.1 17.5" class="tw-stroke-teal-500 tw-stroke-2"/></svg>
-      <svg class="tw-z-[1] tw-top-[27rem] -tw-left-10 tw-h-28 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Hamstring'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 211 145.5"><text transform="translate(3 137.975)">Hamstring</text><g><path d="M118.5 22.1 87.8 92.7M211.5 2.2l-93 19.9" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-      <svg class="tw-z-[1] tw-top-[14rem] -tw-left-10 tw-h-5 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Back'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 220 25.9"><text transform="translate(0 25.567)">Back</text><path d="m220 18.5-130-1" class="tw-stroke-teal-500 tw-stroke-2"/></svg>
-      <svg class="tw-z-[1] tw-top-[35rem] -tw-right-[4.5rem] tw-h-5 tw-text-5xl tw-font-bold tw-fill-teal-500" :class="part=='Calves'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 256 25.9"><text transform="translate(48.704 25.567)">Calves</text><path d="M35 17.7.1 17.5" class="tw-stroke-teal-500 tw-stroke-2"/></svg>
-      <svg class="tw-z-[1] tw-top-[22rem] -tw-right-[4.8rem] tw-h-48 tw-text-6xl tw-font-bold tw-fill-teal-500" :class="part=='Glutes'?'tw-absolute':'tw-absolute'" x-show="back" x-transition:enter=" tw-transition-all tw-duration-[1500ms] tw-transform tw-ease-in" x-transition:enter-start="tw-opacity-20 md:tw-opacity-0" xml:space="preserve" viewBox="0 0 350.1 315.8"><text transform="translate(185.9 313.4)">Glutes</text><g><path d="M70.8 1.2 0 0M228.8 273.8l-160-272.6" class="tw-stroke-teal-500 tw-stroke-2"/></g></svg>
-
-
-      <div class="tw-flex tw-flex-row tw-items-center tw-justify-center z-1 tw-h-[500px]">
-        <button @click="front?(front=false,back=true):(front=true,back=false)" x-show="!loading" class="tw-z-[1] tw-flex tw-flex-row items-start justify-start tw-w-14" x-cloak>
-          <svg class="tw-w-12 tw-h-12 tw-text-teal-500 hover:tw-text-gray-500" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M11.999 1.993C6.486 1.994 2 6.48 1.999 11.994c0 5.514 4.486 10 10.001 10 5.514-.001 10-4.487 10-10 0-5.514-4.486-10-10.001-10.001zM12 19.994c-4.412 0-8.001-3.589-8.001-8 .001-4.411 3.59-8 8-8.001C16.411 3.994 20 7.583 20 11.994c0 4.41-3.589 7.999-8 8z"></path><path d="m12.012 7.989-4.005 4.005 4.005 4.004v-3.004h3.994v-2h-3.994z"></path></svg>
-        </button>
-      <div class="tw-z-0 tw-flex tw-flex-col tw-items-center tw-justify-center z-1 tw-h-[500px] tw-w-96">
-        <div x-show="loading" class="tw-flex tw-flex-col tw-items-center tw-justify-center gap-2">
-          <svg class="tw-animate-spin tw-w-12 tw-text-teal-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="tw-opacity-25" cx="12" cy="12" r="10" stroke="currentColor" tw-stroke-width="4"></circle>
-            <path class="tw-opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <div class="tw-animate-pulse tw-text-blue-500">
-            Loading...
-          </div>
-        </div>
-
-
-      <svg xml:space="preserve" viewBox="0 0 1002.23 1886.91" class="-tw-z-[50] tw-h-[500px]" x-show="front" x-cloak
-            x-transition:enter="tw-transition-all tw-duration-1000 tw-transform tw-ease-in"
-             x-transition:enter-start="tw-opacity-20 md:tw-opacity-0 -tw-mb-10"
-      >
-        <style> .st0 {fill: #acacac}  .st1 {fill: #ababab}  .st2 {fill: #b4b4b4}  .st3 {fill: #cbcbcb}  .st4 {fill: #d0d0d0}  .st5 {fill: silver}  .st6 {fill: #e3e3e3}  .st7 {fill: #a9a9a9}  .st8 {fill: #f6f6f6}  .st9 {fill: #b1b1b1}  .st10 {fill: #d8d8d8}  .st11 {fill: #d4d4d4}  .st12 {fill: #c5c5c5}  .st13 {fill: #b8b8b8}  .st14 {fill: #bebebe}  .st15 {fill: #dcdcdc}  .st16 {fill: #c1c1c1}  .st17 {fill: #d1d1d1}  .st18 {fill: #9e9e9e}  .st19 {fill: #c8c8c8}  .st20 {fill: #c6c6c6}  .st21 {fill: #c7c7c7}  .st22 {fill: #a0a0a0}  .st23 {fill: #bbb}  .st24 {fill: #c9c9c9}  .st25 {fill: #e2e2e2}  .st26 {fill: #c2c2c2}  .st27 {fill: #f3f3f3}  .st28 {fill: #c3c3c3}  .st29 {fill: #a1a1a1}  .st30 {fill: #adadad}  .st31 {fill: #a2a2a2}  .st32 {fill: #b2b2b2}  .st33 {fill: #bcbcbc}  .st34 {fill: #b6b6b6}  .st35 {fill: #b9b9b9}  .st36 {fill: #e1e1e1}  .st37 {fill: #a3a3a3}  .st38 {fill: #c4c4c4}  .st39 {fill: #afafaf}  .st40 {fill: #b3b3b3}  .st41 {fill: #b7b7b7}  .st42 {fill: #dedede}  .st43 {fill: #cacaca}  .st44 {fill: #d9d9d9}  .st45 {fill: #bdbdbd}  .st46 {fill: #dadada}  .st47 {fill: #bfbfbf}  .st48 {fill: #bababa}  .st49 {fill: #e7e7e7}  .st50 {fill: #eee}  .st51 {fill: #a8a8a8}  .st52 {fill: #eaeaea}  .st53 {fill: #ececec}  .st54 {fill: #aeaeae}  .st55 {fill: #b0b0b0}  .st56 {fill: #cdcdcd}  .st57 {fill: #d5d5d5}  .st58 {fill: #b5b5b5}  .st59 {fill: #e6e6e6}  .st60 {fill: #a5a5a5}  .st61 {fill: #dfdfdf}  .st62 {fill: #a4a4a4}  .st63 {fill: #e8e8e8}  .st64 {fill: #9f9f9f}  .st65 {fill: #cecece}  .st66 {fill: #cfcfcf}  .st67 {fill: #d2d2d2}  .st68 {fill: #f8f8f8}  .st69 {fill: #f0f0f0}  .st70 {fill: #e5e5e5}  .st71 {fill: #fff}  .st72 {fill: #ebebeb}  .st73 {fill: #f4f4f4}  .st74 {fill: #e9e9e9}  .st75 {fill: #efefef}  .st76 {fill: #dbdbdb}  .st77 {fill: #f7f7f7}  .st78 {fill: #e4e4e4}  .st79 {fill: #ddd}  .st80 {fill: #e0e0e0}  .st81 {fill: #d6d6d6}  .st82 {fill: #a6a6a6}  .st83 {fill: #d3d3d3}  .st84 {fill: #d7d7d7}  .st85 {fill: #ccc}  .st86 {fill: #aaa}  .st87 {fill: #f2f2f2}  .st88 {fill: #f9f9f9}  .st89 {fill: #ededed}  .st90 {fill: #f5f5f5}  .st91 {fill: #f1f1f1}  .st92 {fill: #a7a7a7}  .st94 {fill: #00fff2}  .st95 {tw-opacity: .5}  .st96 {fill: #00ffec}</style>
-
-        // badan
-        <image href="{{ 'front.png' | asset_url }}" class="tw-w-full tw-h-full" />
-
-        // shekam
-        <a @mouseover="part='Abs'" @mouseover.away="part=='Abs'?part='':''" href="/collections/abs">
-        <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_2" >
-          <path d="M582 752.05c-4.09-18.89-29.74-13.46-43.76-15.86-25.91-1.71-31.66-.95-29.68 26.46 2.15 28.29-4.32 59.36-1.11 88.18 19.37 8.86 56.49-29.05 65.6-45.64 2.88-16.54 14.31-37.94 8.95-53.14zm-71.08 17.12.04.01c-.04.03-.05.04-.04-.01zm-.02-.02.02.02c-.01 0-.02-.02-.02-.02z" class="tw-fill-red-400"/>
-          <path d="M501.3 773.9c-3.39-14.1 7.77-37.27-14.39-37.76-32.61-3.66-79.78 3.34-58.02 45.1.41 34.6 28.72 48.88 51.7 68.05 36.55 20.44 14.99-57.37 20.71-75.39zM502.32 659.93c2.27-19.35 2.64-18.55-16.38-16.81-2.35-.97-38.77.07-41.06.11-3.15-.05-19.54-6.13-21.93-2.07.41 27.42 2.29 57.18 4.92 84.02 10.38 16.16 43.6 2.02 60 3.93 14.85 2.06 12.64-11.08 12.04-21.73 2.5-12.99.53-35.89 2.41-47.45zm-18.03 49.34.47.1-.47-.1zm14.63-11.72.27.62c-.44.17-.22-.41-.27-.62zm-71.97 19.61z" class="tw-fill-red-400"/>
-          <path d="M587.95 640.19c-87.26 13-84.32-31.57-78.03 79.03-2.79 15.48 28.36 8.81 39.98 11.96 51.11 14.81 29.84-58.59 38.05-90.99zm-6.06 77.97zm-44.97 11.99zM594.88 534.67c-11.86-16.58-42.02-21.68-59.72-31.43-31.8-14.22-26.17-5.18-26.37 23.47 1.96 45.76-11.23 35.28 33.26 40.5 36.86 14.37 58.74 14.07 52.83-32.54zm-85 3.42-.07.1c.01-.05-.03-.16.07-.1z" class="tw-fill-red-400"/>
-          <path d="M587.2 584.95c-41.31-5.26-78.02-17.66-78.8-9.4-.88 9.31-2.26 30.77-.06 58.38 24.14 3.2 60.16 10.5 80.57-5.74-2.36-13 8.99-34.6-1.71-43.24zM504.08 502.22c-3.52-16.83-70.14 20.78-83.13 25.05-7.15 3-5.17 49.59 1.89 46.94 20.28 2.65 40.53-5.53 60.02-7.84 5.08-2.21 17.3 1.44 20.19-2.25 1.79-18.31 1.42-43.53 1.03-61.9zm-.99 37.97.02-.01c.01.02-.01.01-.02.01zM502.04 571.31c-27.5-.2-56.74 12.09-82.05 13.5.93 9.78-2.34 43.28 6.64 46.43 22.32 8.47 52.49 6.07 75.6 3.06-1.3-19.92 4.4-43.13-.19-62.99z" class="tw-fill-red-400"/>
-        </g>
-        </a>
-
-        // bazooha
-        <a @mouseover="part='Biceps'" @mouseover.away="part=='Biceps'?part='':''" href="/collections/biceps">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_3" class="st95">
-            <path d="M802.5 576.72c-20.29-88.18-32.15-103.8-104.92-145.77-20.98-22.81-22.35 2.37-18.97 21.93.04 28.36-.22 64.98 1.11 89.88 13.67 18.44 20.27 65.55 52.88 73.86 12.77 2.4 23.26 17.93 34.02 9.28 11.77-1.72 13.18-15.72 18.74-24.14 5.12-6.82 12.22-16.49 17.14-25.04zm-47.37-40.62c.13-.36.64 1.15.91 1.53-.61-.31-1.07-.67-.91-1.53zm-37.64-40.62c.12.33.07.38-.16.1.05-.03.1-.07.16-.1zm29.93 3.39c.12-.16.26-.27.4-.35-.13.12-.26.23-.4.35zm-32.84-6.04c-.04-.02-.08-.04-.11-.06.08-.06.11-.04.11.06zm41.79 85.91c.11-.01.24-.11.2.08-.07-.02-.13-.05-.2-.08zm5.2-11.92c.01.02 0 .01 0 0 .04 0 .05.01 0 0zm-64.99-94.98c.01-.01 0-.01 0 0 0-.01 0-.01 0 0zm77.31 147.25c.05.17.11.34.16.51-.06-.17-.12-.34-.16-.51zM322.97 429.04c-.76-12.63-8.32-8.73-13.3-3.17-40.77 28.82-80.26 39.93-96.81 96.97-23.01 65.42-14.91 47.62 13.88 100.29 9.27 8.64 20.89 4.25 31.6-3.33 8.47-6.6 20.89-7.09 28.73-13.88 42.49-67.56 37.34-100.82 35.9-176.88zm-62.03 74.04c-.17-.18 0-.16.16-.23-.06.08-.11.15-.16.23zm4.73 11.75c-.03.02-.02.01 0 0 0 .02-.03.02 0 0zm-12.49 6.28c-.01.06-.04.1-.11.08l.11-.08zm-11.54-15.19c-.03-.03-.05-.04-.01-.06.01.03.02.05.01.06zm30.95 34.97c.06-.07.08-.07.07.02-.02 0-.05-.01-.07-.02zm-15.24 56.09c.1-.05.2-.11.31-.16 0 .21-.14.18-.31.16z" class="tw-fill-blue-400"/>
-          </g>
-        </a>
-
-        // sineh
-        <a @mouseover="part='Chest'" @mouseover.away="part=='Chest'?part='':''" href="/collections/chest">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50">
-            <path id="Layer_5" d="M677.92 407.51c4.29-78.99-97.44-91.26-149.99-45.32-25.84 12.44-20.85 47.55-25.64 69.09-3.04 23.03-4.18 4.73-6.5-6.74-5.51-23.47-1.15-48.48-23.23-62.79-40.18-30.81-109.55-40.35-141.45 2.79-9.64 25.3-15.84 56.87-5.06 84.96 19.17 18.1 36.13 53.4 65.91 55.06 31.31-7.11 60.06-17.97 92.46-18.48 7.61 1.38 11.63-6.76 14.98-12.18 3.45 2.45 7.39 15.27 15.85 12.07 35.33-.64 64.7 15.9 98.38 19 21.94-6.44 33.79-30.35 51.97-43.99 11.2-13.6 15.31-33.85 12.32-53.47zm-148 77.99c0 .02 0 .01 0 0 .02.02.02.02 0 0zm-135.08-15.12c0 .01 0 0 0 0 .01.01.03.03 0 0zm105.61-14.02c-.41.08-.87.08-1.18-.02.4-.02.79-.01 1.18.02zm135.47-32.84c0 .01 0 0 0 0 .01 0 .01.01 0 0zm16.04 7.85c.08.02.16.03.24.04-.14.06-.35.2-.24-.04zm-263.12 35.02c.14.12.13.15-.07.14.03-.05.05-.09.07-.14zm176.2 2.11c-.07.01-.03.01 0 0 .01.05-.07.01 0 0zm-222.45-63.59c-.35-.72-.69-1.45-1.02-2.18.44.69.78 1.42 1.02 2.18zm291.39 61.5c-.04.08-.02.04 0 0 .06.07 0 .08 0 0zm-171.01 19.02c.04.05.09.11-.01.09 0-.03 0-.06.01-.09zm199.92-90.84c.02-.04.01-.02 0 0-.05-.01.01-.04 0 0zm-187.74.04c.62.46-.06 1.39-.83 1.59-.66.24.82-1.18.83-1.59zm-5.2 90.89.15-.18c.08.17.02.2-.15.18zm29.02-18zm172.81-93.02c0-.01 0 0 0 0s-.01 0 0 0zm-270.85-38.05s0 .01 0 0zm90.08 125.98c-.04.06-.02.03 0 0 .05.07 0 .07 0 0zm7.86 5.07c.03.01.03.05.11.01.02.15-.07.08-.11-.01zm99.05 35.89z" class="tw-fill-[#67d2cd]"/>
-          </g>
-        </a>
-
-        // ran-ha
-        <a @mouseover="part='Legs-Quads'" @mouseover.away="part=='Legs-Quads'?part='':''" href="/collections/legs-quads">
-        <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_6" class="st95">
-          <path d="M663.57 1121.35c-.95-34.13.74-63.17-14.51-94.16-24.19-38.74-54.58-41.7-58.28 8.71-10.69 37.85-53.84 246.27-10.34 259.57 71.75-15.2 85.78-109.88 83.13-174.12zm-1.15-8.89c.03.32-.1 0-.19-.12.06.04.12.08.19.12zm-94.95 64.72c.4-.11.73-.21 1-.32-.15.12-1.1.95-1 .32zm65.98-16.67c-.19-.46-.39-.91-.61-1.36.58.06.63.58.61 1.36zm-12.47-35.12c-1.9.22-.93-3.1.41-1.95-.34.28-.41.85-.41 1.95zm-24.54-76.86c.01-.04.01-.02 0 0-.03-.01 0-.04 0 0zm-31.97 184.92c.01.04.03.07-.01.1 0-.03 0-.07.01-.1zm1.99 19.57c.06.66-.15.28-.39-.04.13.01.25.03.39.04zm-3 5.43c.08.09.15.17-.02.18.01-.05.01-.11.02-.18zm6.59-85.9c-.05-.22.01-.45.01-.7-.01.24-.01.47-.01.7zM437.52 1246.39c1.3-24.87-2.12-49.88-3.08-74.92-1.69-32.16-9.84-61.55-14.71-91.89-7.81-25.91-7.72-57.67-21.3-77.08-16.31-14.41-35.95 8.11-45.33 23.79-13.34 19.53-14.9 43.73-15.58 67.17-.03 44.7-3.79 92.44 13.04 132.97 13.82 51.11 95.3 114.91 86.96 19.96zm-.05 12.06c.03.08 0 .1-.09.07.03-.02.06-.05.09-.07zm-4.01-80.99c-.48-.14-.82-.35-1.06-.6.33.16 1.25-.06 1.06.6zm-28.09 67.78c.03.13-1.25.65-1.72.82.55-.25 1.11-.52 1.72-.82zm-47.95-201.76c-.1-.06-.12-.14-.07-.23.02.07.04.15.07.23zm-18.97 49.95c-.07.01-.03.01 0 0 .02.14-.03.08 0 0zm8.25 108.82c.86-.53 2.07-.43 3.36-.23-1.52.13-2.59.13-3.36.23z" class="tw-fill-lime-400"/>
-        </g>
-        </a>
-
-        // gardan
-        <a @mouseover="part='Neck & Traps'" @mouseover.away="part=='Neck & Traps'?part='':''" href="/collections/neck-traps" >
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50">
-        <path id="Layer_7" d="M598.39 294.35c-35.83-13.31-39.99-28.29-36.16-63.23-1.98-5.73 2.88-26.02.09-27.02-6.53 10.31-12.69 22.3-25.64 26.61-27.86 4.95-67.18 8.59-88.51-11.17-8.25-7.64-11.71-18.19-13.27-16.45-1.79 6.27 9.4 61.1-5.38 71.03-9.87 19.83-91.03 32.41-67.91 42.08 49.39 8.41 99.35 12.45 144.35 18.06 28.99-8.89 62.35-9.12 94.06-10.44 48.45-12.6 38.71-12.84-1.63-29.47zm-89.94-38.21c.02.04.1.07.05.11-.02-.05-.11-.08-.05-.11zm-22.02 28c-.01.01-.01.01 0 0 .01.02.01.03 0 0zm34.98.02c.07-.08.03-.04 0 0-.02-.08.02-.12 0 0zm-28.99 27c-.02-.01-.03-.02-.05-.03.02-.01.04-.01.05.03zm-10.01-11.03c-.01 0-.01 0 0 0 .01.04 0 .02 0 0zm28.86-50.98c-.07-.2.04-.08.14.01-.05 0-.09 0-.14-.01zm-35.85 7.01c-.16.03-.23-.03-.24-.2.07.07.16.13.24.2zm9.77 72.99c-.22-.53-.09-.37.23 0h-.23z" class="tw-fill-yellow-400"/></g>
-        </a>
-
-        // shaneha
-        <a @mouseover="part='Shoulders'" @mouseover.away="part=='Shoulders'?part='':''" href="/collections/shoulders">
-        <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_8" class="st95">
-          <path d="M757.19 469.51c5.8 3.87 4.37-3.3 4.26-6.88 0-24.04-.09-46.87-5-70.94-15.11-98.12-209.81-98.65-133.68-56.22 29.96 15.29 61.09 26.95 53.07 63.96 2.69 8.86-2.67 24.72 8.78 32.25 19.7 13.39 47.95 23.17 72.57 37.83zm-78.55-65.86zm50.98 36.99c-.06-.06-.03-.03 0 0-.05 0-.07-.04 0 0zm-52.07-45c.09-.11.04-.06.09.01 0 .02-.05-.02-.09-.01zM381.74 312.64c-59.32-21.31-147.06 36-142.7 103.93.34 7.81-8.74 68 6.18 50.22 16.71-6.92 35.08-17.2 49.03-23.42 43-18.9 22.68-34.55 30.46-72.64.86-19.51 103.49-47.62 57.03-58.09zm-60.03 80c.04 0 .02 0 0 0-.01-.06.02-.02 0 0zm-50.15 58.2c-.01-.14-.01-.24.15-.2-.05.07-.1.13-.15.2zm49.09-47.14c.03.01.02 0 0 0 .05-.06.06-.05 0 0z" class="tw-fill-pink-400"/>
-        </g>
-        </a>
-
-        //sa-ed-ha
-        <a @mouseover="part='Forearms'" @mouseover.away="part=='Forearms'?part='':''" href="/collections/forearms">
-        <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_9" class="st95">
-          <path d="M272.38 626.44c-20.67-1.87-46.97 12.97-64.99-3.17-5.01-6.52-13.12-31.77-21.05-29.84-43.27 63.41-45.16 141.5-72.82 209.91-25.25 56.67-18.81 41.61 29.86 57.85 17.62 12.55 18.8-12.53 28.27-25.72 38.36-64.06 108.79-133.92 100.73-209.03zm-98.13 129.07c-.03-.12-.06-.23.11-.19-.04.06-.07.13-.11.19zm77.1-76.06c0-.08 0-.04 0 0-.14-.01-.06-.06 0 0zm-44.99 85.87c-.03.03-.02.02 0 0 0 .03-.01.05 0 0zm-31.03-119.05c.05-.27.15-.5.28-.7-.09.24-.18.47-.28.7zm93.76.24c.08-.06.16-.12.25-.18.06.21-.1.17-.25.18zM900.09 843.26c-.68-1.3-1.35-2.6-2.03-3.9-1.39-1.9-.38-4.26-2.05-6.03-22.77-25.51-64.41-272.69-94.91-231.21-5.27 15-16.69 32.64-36.59 28.37-9.77-.66-18.94-2.34-30.22-3.95-11.67-2.57-15.77-.19-11.63 13.57 6.85 37.94 18.2 75.84 41.76 107.16 28.78 36.13 58.42 81.19 74.51 118.3 6.04 13.91 50.85-10.33 61.16-22.31zm-45.86-92.94c-.01-.06 0-.03 0 0-.03-.05-.13-.14 0 0zm-56.45-71.18c.21-.02.41-.08.46.19-.16-.05-.31-.12-.46-.19zm-6.84-28.58c-.03.04-.06.08-.09.11.01-.13-.05-.3.09-.11zm-22.69 53.01c-.05-.39.12-.11.29.03-.09-.02-.19-.02-.29-.03zm-3-60.24c-.01.04-.01.02 0 0-.01.02.01.07 0 0zm24.55 4.34c.05.16.09.32.13.47-.07-.21-.52-.76-.13-.47zm-43.43 31.76c-.07-.01-.15-.01-.12-.1.05.03.08.07.12.1zm80.87 134.88c.13.06.14.08 0 .07v-.07zm-28.82-193.85c-.11.01-.18.01-.18-.12.07.03.12.08.18.12z" class="tw-fill-green-400"/>
-        </g>
-        </a>
-      </svg>
-
-
-      <svg xml:space="preserve"  viewBox="0 0 938.89 1891.3" class="-tw-z-[50] tw-h-[500px]" x-show="back"
-            x-transition:enter=" tw-transition-all tw-duration-1000 tw-transform tw-ease-in"
-             x-transition:enter-start="tw-opacity-20 md:tw-opacity-0 -tw-mb-10"
-            x-cloak
-      >
-          <style> .sst0 {fill: #f7f7f7}  .sst1 {fill: #a2a2a2}  .sst2 {fill: #a7a7a7}  .sst3 {fill: #a1a1a1}  .sst4 {fill: #fff}  .sst5 {fill: #f6f6f6}  .sst6 {fill: #f3f3f3}  .sst7 {fill: #d3d3d3}  .sst8 {fill: #acacac}  .sst9 {fill: #bfbfbf}  .sst10 {fill: #f5f5f5}  .sst11 {fill: #a0a0a0}  .sst12 {fill: #d4d4d4}  .sst13 {fill: #9e9e9e}  .sst14 {fill: #cecece}  .sst15 {fill: #c3c3c3}  .sst16 {fill: #a3a3a3}  .sst17 {fill: #d7d7d7}  .sst18 {fill: #dadada}  .sst19 {fill: #dcdcdc}  .sst20 {fill: #c8c8c8}  .sst21 {fill: #d5d5d5}  .sst22 {fill: #c4c4c4}  .sst23 {fill: #c6c6c6}  .sst24 {fill: #a6a6a6}  .sst25 {fill: #d2d2d2}  .sst26 {fill: #d1d1d1}  .sst27 {fill: #b1b1b1}  .sst28 {fill: #bcbcbc}  .sst29 {fill: #e5e5e5}  .sst30 {fill: #bebebe}  .sst31 {fill: #e9e9e9}  .sst32 {fill: #e1e1e1}  .sst33 {fill: #d8d8d8}  .sst34 {fill: #f0f0f0}  .sst35 {fill: #b9b9b9}  .sst36 {fill: #cfcfcf}  .sst37 {fill: #eaeaea}  .sst38 {fill: #d0d0d0}  .sst39 {fill: #b7b7b7}  .sst40 {fill: #efefef}  .sst41 {fill: #dedede}  .sst42 {fill: #c5c5c5}  .sst43 {fill: #ededed}  .sst44 {fill: #c2c2c2}  .sst45 {fill: #c7c7c7}  .sst46 {fill: #bbb}  .sst47 {fill: #9f9f9f}  .sst48 {fill: #a4a4a4}  .sst49 {fill: #e4e4e4}  .sst50 {fill: #e2e2e2}  .sst51 {fill: #ececec}  .sst52 {fill: #dbdbdb}  .sst53 {fill: #b4b4b4}  .sst54 {fill: #bababa}  .sst55 {fill: #e7e7e7}  .sst56 {fill: #c1c1c1}  .sst57 {fill: #e8e8e8}  .sst58 {fill: #ccc}  .sst59 {fill: #dfdfdf}  .sst60 {fill: #bdbdbd}  .sst61 {fill: #cacaca}  .sst62 {fill: silver}  .sst63 {fill: #cbcbcb}  .sst64 {fill: #afafaf}  .sst65 {fill: #c9c9c9}  .sst66 {fill: #e0e0e0}  .sst67 {fill: #d6d6d6}  .sst68 {fill: #a8a8a8}  .sst69 {fill: #a5a5a5}  .sst70 {fill: #ebebeb}  .sst72 {fill: #aaa}  .sst73 {fill: #aeaeae}  .sst74 {fill: #b0b0b0}  .sst75 {fill: #b2b2b2}  .sst76 {fill: #adadad}  .sst77 {fill: #cdcdcd}  .sst78 {fill: #ababab}  .sst79 {fill: #d9d9d9}  .sst80 {fill: #a9a9a9}  .sst81 {fill: #e3e3e3}  .sst82 {fill: #e6e6e6}  .sst83 {fill: #b3b3b3}  .sst84 {fill: #989898}  .sst85 {fill: #fbfbfb}  .sst86 {fill: #ddd}  .sst88 {fill: #fafafa}  .sst90 {fill: #f1f1f1}  .sst91 {fill: #f2f2f2}  .sst92 {fill: #f4f4f4}  .sst93 {fill: #b8b8b8}  .sst94 {fill: #eee}  .sst96 {fill: #f9f9f9}  .sst97 {fill: #9b9b9b}  .sst98 {fill: #b6b6b6}  .sst99 {fill: #b5b5b5}  .sst102 {tw-opacity: .5}  .sst103, .sst104 {fill: #00fff2}  .sst104 {tw-opacity: .5}</style>
-
-          // badan
-        <image href="{{ 'back.png' | asset_url }}" class="tw-w-full tw-h-full" />
-
-          // mahicheha
-          <a @mouseover="part='Calves'" @mouseover.away="part=='Calves'?part='':''" href="/collections/calves">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_3" class="tw-sst102">
-            <path d="M640.56 1509.32c3.32-38.83-6.41-79.35-22.49-114-15.32-16.83-41.68 2.03-36.32 22.89-2.43 53.88 14.12 104.01 7.03 155.47.42 21.14 32.34 26.77 40.65 4.64 5.25-24.3 11.2-46.72 11.13-69zm-47.99 27.1c0-.03.01-.06.01-.1 0 .04.05.09-.01.1zm10.88-23.21c-.15-.08-.25-.13-.01-.18 0 .07.01.12.01.18zm10.24 16.99c-.45-.35-.72-.53.2-.44.37-.03-.1.27-.2.44zm1.08-36.09c.04.04.06.09.11.13-.16.04-.18 0-.11-.13zm-17.11 31.87c-.09.2-.28.7-.49.75.19-.24.36-.49.49-.75zm-5.08-2.65.42.33c-.46.33-.45.09-.42-.33zm46.87-40.99zM417.34 1529.3c-2.21-38.17-4.69-78.24-13.27-114.04-11.17-18.91-37.5-2.91-37.42 17.51-6.06 38.35-11.09 83.39-3.21 122.7 12.45 20.09 12.84 54.17 34.65 65.65 13.8-27.32 27.62-62.03 19.25-91.82zm-55.17 8.02h.1c-.05.02-.13.1-.1 0zm14.7-87.55c-.24-.4-.48-.81-.72-1.25.77-.19.51.73.72 1.25zm41.22 86.66c-.12.03-.05-.03 0-.1v.1zm-33.5-128.06zm-7.61 3.9c.13-.26.28-.51.45-.77-.12.25-.27.51-.45.77z" class="tw-fill-lime-400"/>
-            <path d="M583.06 1506.11c-5.24-28.24 7.86-89.11-25.16-97.64-33.81-10.64-24.63 67.35-30.79 93.83-6.33 22.27-3.09 134.3 28.42 112.03 14.43-33.73 32.09-69.42 27.53-108.22zM567 1448.56c.04-.04.02-.02 0 0 0-.04.04-.04 0 0zm11.76 72.56c.08.36-.03.67-.67.77.22-.26.45-.52.67-.77zm-29.69-112.48c.11.12-.24-.07-.3-.12l.3.12zM360.09 1463.32c2.5-26.7 9.61-91.89-32.6-69.97-14.37 16.11-12.83 41.06-21.56 60-4.8 28.1-10.67 126.61 23.58 139.07 35.46 2.08 21.58-31.86 23.86-54.22-3.27-26.49 6.88-48.08 6.72-74.88zM329 1531.95c.3.28.59.54.87.79-.32-.21-.62-.47-.87-.79zm9.65-101.9c.14.09.24.18.04.28-.01-.1-.03-.19-.04-.28zm-3.02 5.28c-.04.09-.08.05-.12-.01.04.01.08.01.12.01zm-6.12-15c0-.03-.03-.12.02-.09-.01.04-.02.06-.02.09zm21.41 103c.05.42-.01.59-.45.35.15-.12.3-.23.45-.35zm9.11-114.99c.01.03.01.05-.02.02 0-.01.01-.01.02-.02zm-30.54 173.03c.43.23.83.54 1.2.97-.49-.08-.93-.38-1.2-.97zm24.4-14.06c-.08.09-.14.13-.12-.02l.12.02z" class="tw-fill-lime-400"/>
-          </g>
-          </a>
-
-          // sa-ed-ha
-          <a @mouseover="part='BForearms'" @mouseover.away="part=='BForearms'?part='':''" href="/collections/forearms">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_5" class="tw-sst102">
-            <path d="M231.56 665.11c-69.88 10.69 22.3-109.09-41.08-100.15-27.85 9.21-10.79 58.69-33.47 76.28-11.43 6.3-6.55-18.01-13.5-23.1-30.68 48.56-42.29 108.4-49.99 165.95-7.71 89.61-59.86 92.62 22.95 122.92 16.29 11.23 15.92-25.75 24.83-34.51 34.8-62.25 99.14-140.25 90.26-207.39zm-23.05 78.98c-.01.13-.02.25-.02.38-.15-.15-.16-.25.02-.38zm-38.01-101c.02.05.01.03 0 0 .07-.01.05.03 0 0zm54.01 52.21c0-.14 0-.07 0 0-.22-.04-.18-.09 0 0zm-46.2 58.62c.17.63-.22 1.23-.87 1.47.29-.49.58-.97.87-1.47zm15.53-47.44c.4-.3.81-.6 1.21-.91-.38.31-.78.61-1.21.91zm-29.42-23.31c-.01-.02-.03-.05-.04-.08.12-.01.13.01.04.08zm-4.92 6.92c0-.02 0-.01 0 0-.03 0-.02-.02 0 0zm-21 120c0 .03.01.05.02.08-.07-.02-.09-.03-.02-.08zm66.71-85.14c-.53.8-1.1 1.57-1.68 2.34.4-.86.97-1.68 1.68-2.34zM178.5 697.1c0-.01 0 0 0 0 0-.01 0-.01 0 0zm18-35s0-.01 0 0zm-81 231.99c-.01.02-.01.01 0 0 .01.02 0 .03 0 0zm0-12.94c.04-.02.02-.01 0 0-.01-.05.01-.06 0 0zm28-240.06c0 .06 0 .03 0 0 .02.03.02.06 0 0zm29.17-39.05zM858.73 832.03l14.17 51.06c-6.47-18.74-15.83-45.71-22.01-77.69-7.12-36.83-11-78.98-17.49-101.3-2.75-15.98-8.07-31.38-14.99-46-2.93-9.85-9.77-18.45-13.08-27.96-1.64-3.33-3.29-6.67-4.93-10-8.89-6.1-4.75 17.26-9.46 22.4-34.43-7.01-5.81-89.28-51.37-77.3-35.8 12.51 15.34 71.52-6.89 93.48-6.84 15.36-35.32-3.51-23.68 21.73 7.95 87.81 77.54 148.99 106.73 228.59 11.45 1.31 19.6-9.62 30.21-11.81 4.94-2.61 30.03-11.62 26.73-15.22m-46.83 11.16c-.15-.75.44.44.46.71a1.7 1.7 0 0 1-.46-.71zm-68.43-246.96c.1-.08.05-.04 0 0-.09-.15.02-.13 0 0zm37.86 148.04c.01-.18.03-.36.08-.57.27.2.1.36-.08.57zm-26.47-99.22-.03.29c-.18-.17-.28-.26.03-.29zm-51.25-.94c.01.06.01.03 0 0 .08.04.12.07 0 0zm81.55-36.22c-.46-.14-1.48.5-1.9.1 1.09-.8 1.38-1.68 1.9-.1zm-32.87-12.34c.83-.18 1.52.11 2.08.75-.71-.36-1.4-.61-2.08-.75zm79.86 151.41c-.77-.85-.85-2.14-.25-3.07.12 1.02.2 2.04.25 3.07zm-80.04-183.82c.52-.72 1.28-.92 2.16-.87-.74.23-1.46.57-2.16.87zm-2.44-37.06z" class="tw-fill-green-400"/>
-          </g>
-          </a>
-
-          // basan
-          <a @mouseover="part='Glutes'" @mouseover.away="part=='Glutes'?part='':''" href="/collections/glutes">
-            <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50">
-          <path id="Layer_6" d="M630.42 972.25c-.04-21.27-11.79-37.54-17.11-58.21-1.94-21.57 15.2-51.44-2.96-69.05-14.64-27.09-50.69-37.04-81.76-40.05-38.36-11.3-51.58 46.78-54.57 73.26-7.6 7.39-11.03-63.03-37.86-73.62-41.2-4.25-102.43 12.79-111.35 58.9 8.32 55.58 1.89 50.13-9.82 96.94-8.7 77.82 46.21 103.43 112.18 90.04 8.81-1.46 25.26 1.83 26.05-11.43 19.61-35.32 18.04-74.4 17.98-113.63 2.88 1.01-1.09 26.31 1.39 35.61-1.85 30.43 4.65 65.33 22.94 87.56 13.82 1.82 27.43 2.57 41.09 4.75 60 2.98 89.07-19.93 93.8-81.07zm-160.29-63.84c0-.03 0-.01 0 0-.02-.02-.04-.04 0 0zm-.32-11.33c-.14-.03-.07-.02 0 0 .04.21-.12 0 0 0zm-108.42 32.21s-.17.21-.38.41c.07-.51-.06-1.19.38-.41zm20.97-44.81c.18.14.24.29.02.52-.32.42-.02-.28-.02-.52zm24.74 33.61c1.03.12-1.34.39-.48.11.14-.08.34-.15.48-.11zm46.04-.68c0 .01 0 .01 0 0 0 .01 0 .01 0 0zm-41.4 40.11c.15-.22.52-.35.81-.42 1.4-.55-1.45 1.02-.81.42zm52.39-56.06c0-.03 0-.02 0 0-.04-.03-.04-.04 0 0zm-36.46 5.71c.64-.98 1.43-1.82 2.23-2.59-.7.91-1.45 1.77-2.23 2.59zm34.47 88.33c0-.06 0-.03 0 0-.07.02-.01-.05 0 0zm7.99-91.27v.18c-.08-.09-.19-.16 0-.18zm71.47-47.69c.99-1.21.04.14-.17.8-.03-.27 0-.54.17-.8zm-21.54 14.8c-.01.02 0 .01 0 0 .02 0-.01.05 0 0zm26.63 86.62c.3-.04.56.02.76.3-.25-.1-.51-.2-.76-.3zm-56.55-40.46c-.05 0-.11.02-.16.02.07-.03.17-.17.16-.02zm84.46-73.97c-.14-.35-.16-.7.02-1.06.02.37.02.73-.02 1.06zm-54.29 22.03c-.04-.03-.08-.05-.12-.08.04.04.13.03.12.08zm-14.87-14.67c-.6-.57.11-.52.55-.69-.21.24-.39.47-.55.69zm61.44-27.96c0-.01 0-.01 0 0 0 0 0-.02 0 0zm-99.15 107.94c0 .03 0 .01 0 0 0 .01.01.07 0 0zm8.19-10.24c-.06-.11.18-.37.25-.55 0 .33.24.74-.25.55zm-137.82 90.62c.58-.11.48-.09.03.17-.02-.05-.02-.11-.03-.17zm134.17-101.66c-.11.16-.14.34-.16.53.06-.16-.07-.62.16-.53zm.87-1.42c0 .16 0 .08 0 0 .3.04.18.1 0 0zm1 49.24c0 .01.02.04 0 .03v-.03zm-45.33-145.9c-.36-.04-.73-.11-1.11-.23.38.08.75.15 1.11.23zm-15.54-4.71c.16.53-.35.17-.69.15.24-.06.47-.1.69-.15zm-96.94 148.65zm155.16-36.82c-.64-1.87-1.07-7.26.57-8.16-1.09 3.1 1.63 12.78-.57 8.16zm90.61 132.73z" class="tw-fill-indigo-400"/>
-            </g>
-          </a>
-
-          // ran-ha
-          <a @mouseover="part='Hamstring'" @mouseover.away="part=='Hamstring'?part='':''" href="/collections/hamstring">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_7" class="tw-sst102">
-            <path d="M670.1 1154.77c.9-16.34-1.67-33.49-1.79-48.93-7.5-18.29-5.88-144.84-34.87-110.2-17.01 12.35-19.07 43.06-37.05 53.65-33 9.46-56.75 23.58-57.62 61.81-.38 31.06 4.72 61.01 6.8 89.69.82 34.53 3.56 70.51 22.26 99.98 10.45 25.28 26.27 48.28 45.85 68.2 21.17 25.7 24.43 24.04 22.29-10.22.78-7.03.79-13.21 1.03-20-.65-2.83.33-5.92-.03-8.95 6.09-59.25 35.13-114.75 33.13-175.03zm-25.3-66.59c.62-2.07.12.86.08 1.77-.23-.53-.35-1.09-.08-1.77zm-82.15 69.22c-.28-.54.64 0 .75.21.92 1.71-.94 1.67-.75-.21zm53.55 81.28c-.11.42-.48.6-.87.68.28-.26.57-.49.87-.68zm-6.83-57.67c.01-.01.01-.01 0 0-.06-.1-.05-.09 0 0zM593.11 1200c.36-.06.7-.12 1.02-.18-.4.63-.54.86-1.02.18zm36.71-50.77c.01.02.01.01 0 0 .06-.08.06-.06 0 0zm-20.51 31.69c-.04-.05-.14-.08-.15-.14.05.03.09.1.15.14zm17.5 112.02c.11-.24.22-.48.32-.72-.05.3-.15.59-.32.72zm-26.08-18.29c.14.21.08.82.17 1.26-.33-.31-.44-.78-.17-1.26zm27.97-156.22c-.13-.07-.08-.09.03-.13-.01.04-.01.08-.03.13zm-65.71 36.05c-.08.64-.34 1.3-.66 1.96-.9-1.4-1.45-1.79.66-1.96zm82.87 49.65c-.17.28-.31.56-.44.85.13-.58-.17-1.96.44-.85zm-12.71 146.6c-.01.01-.01 0 0 0 .01.03 0 .04 0 0zm-56.41-80.44c.04.15.07.3.11.45-.23-.06-.13-.26-.11-.45zm15.13-27.22c-2.16-.6-.08-.59 1.25-1.07-.02.79-.17 1.37-1.25 1.07zM440 1209.78c-15.73-31.92-17.57-69.76-22.56-108.92-18.58-28.45-14.68 40.56-14.33 52.89-2.93 12.69-2.64 25.79-3 39.04-5 41.74 1.47 90.88-25.97 126.91-32.37 23.81.32 57.07 19.05 75.98 5.66 4.13 4.25 15.6 12.01 18.24 11.73-15.83 10.45-44.63 14.83-66.22 8.71-43.91 23.54-94.27 19.97-137.92zm-35.78-66.4c.01.27.01.13 0 0 .02.14.15.3 0 0zm-2.05 246.38c.13.04.23.06.35.08-.19.12-.42.25-.35-.08zm-.84-209.94a.219.219 0 0 0-.05-.03c.03-.01.06-.01.05.03zm.04 18.91c-.13.04-.23.08-.2-.09.07.03.14.05.2.09zm-23 115.03c0 .01 0 .01 0 0z" class="tw-fill-green-400"/>
-            <path d="M361.16 1324.25c13.65-29.78 36.17-63.37 33.06-100.46 1.32-36.94 8.08-72.09 7.94-109.84-.08-41.15-24.47-55.12-61.55-66.54-22.87-32.98-49.95-106.58-57.46-14.93-28.77 127.66-.1 191.35 21.23 305.25 3.63 24.43-10.02 75.76 19.79 34.48 14.05-16.22 27.61-30.16 36.99-47.96zM313.78 1020c-.4-.04-.26-.38-.17-.66.06.22.11.44.17.66zm79.39 186.78c-.01-.06-.01-.1.05-.04-.02.02-.03.03-.05.04zm-28.95 65.07c.2-.48.41-.97.62-1.45.15.69.09 1.25-.62 1.45zM311.4 1149.1c.02.05.13.11.08.16-.02-.06-.05-.11-.08-.16zm-.19-.26c-.02-.05.04.06.06.08-.02-.03-.03-.06-.06-.08zm67.89 7.4c-.82 2.16-.91.97-.79.04-1.43-2.96 2.98-2.94.79-.04zm-47.29 163.19c.01.51-.24.77-.85.84-2 .34 0-.45.85-.84zm61.97-190.85c-.13-.23-.05-.24.18-.26-.05.09-.12.17-.18.26zm-16.57-28.91c-.31-.28.95.52 1.27.72-.46-.19-.91-.4-1.27-.72zm-78.08 185.07c.05-.03.05-.02.05.03-.02-.01-.04-.02-.05-.03zm7.15 76.74c-.03.09-.05.18-.08.26-.03-.14-.14-.31.08-.26zm1.68 27.28zM581.23 1341.74c-29.27-38.99-38.92-74.37-38.08-123.96-1.77-14.17-6.15-203.77-22.86-87.94-4.14 28.12-6.8 53.13-18.43 77.14-4.74 36.23 8.02 80.82 13.47 117.78 12.52 21.14 7.39 126.6 33.88 68.11 13.42-9.48 26.85-27.92 31.8-45.14 1.03-1.44 2.14-3.84.22-5.99zm-41.08-142.96c-.22.02.05-.16 0 0zm27.18 149.2c.22-.37.5-.7.89-.94-.3.31-.59.62-.89.94z" class="tw-fill-green-400"/>
-          </g>
-          </a>
-
-          // gardan
-          <a @mouseover="part='BNeck & Traps'" @mouseover.away="part=='BNeck & Traps'?part='':''" href="/collections/neck-traps">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_8" class="tw-sst102">
-            <path d="M565.01 285.44c-55.82-37.33-3.52-91.28-32.94-89-43.08-19.09-65.46-28.63-109.93-7-25.9 13.15-24.95-.21-21.24 30.4 12.66 63.06-38.72 69.05-82.27 89.31 58.29 25.93 76.9 14.27 129.78-12.87 35.46-19.49 73.54 21.66 110.82 29.44 26.47-4.07 89.64-15.26 34.42-28.04m-154.67-89.2c.16.21-.15.01-.27 0 .09-.01.18 0 .27 0zm-35.58 67.5c-.05-.02-.11-.03-.17-.05.21-.08.38-.18.17.05zm138.8 25.06c-.02-.05-.02-.07.03-.04-.01.02-.02.03-.03.04zm-11.64-43.18c.01-.04.02-.08.03-.11.09.09.11.13-.03.11zm-126.85-8h-.13c.08-.03.14-.12.13 0zm133.93-3.03c-.14-.17-.03-.32.05-.49-.02.16-.03.32-.05.49zM401.9 232.88zm-27.08 75.35c.37-.13.74-.26 1.11-.4-.29.24-.64.38-1.11.4zm26.74-75.41" class="tw-fill-yellow-400"/>
-            <path d="M469.47 415.76c.32-38.25-.06-56.59-.03-100.06 0-8.2-8.1-13.95-15.84-11.23-24.41 8.6-51.52 17.79-69.62 31.91-.98.76-1.44 2.03-1.19 3.24 4.12 20.21 26.58 57.7 33.25 77.82l44.67 5.93c4.61.61 8.72-2.96 8.76-7.61zm-33.48 10.85c.04-.05.1-.09.14-.13.03.13-.02.14-.14.13zm.12-38.55c-1.37-.3-2.7-.72-4.01-1.22 1.14.09 2.56.6 4.01 1.22zm6.94 37.49c.07-.06.18-.22.29-.17-.1.05-.2.11-.29.17zm4.29-98.39c.37.14.54.16-.03.2-.12.04.02-.12.03-.2zm20.21 80.96c.15.71-.34.47-.86.38.29-.12.57-.25.86-.38zm-15.29-81.02c-.06.2-.12.4-.19.6-.27-.16-.2-.35.19-.6zm28.71 96.27 44.67-5.93c6.67-20.12 29.13-57.61 33.25-77.82a3.27 3.27 0 0 0-1.19-3.24c-18.1-14.12-45.21-23.31-69.62-31.91-7.74-2.72-15.84 3.03-15.84 11.23.03 43.47-.35 61.82-.03 100.06.04 4.65 4.15 8.22 8.76 7.61z" class="tw-fill-yellow-400"/>
-          </g>
-          </a>
-
-          // shaneha
-          <a @mouseover="part='BShoulders'" @mouseover.away="part=='BShoulders'?part='':''" href="/collections/shoulders">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_9" class="tw-sst102">
-            <path d="M352.99 294.93c-45.19 23.15-109.09 18.89-140.82 64.28-19.82 27.03-29.62 78.93-16.54 107.89 14.82-32 57.68-32.32 72.69-58.71 1.06-14.52 7.13-27.68 12.75-39.24 7.36-9.79 19.96-15.96 33.13-19.86 21.17-9.68 41.46-30.13 38.79-54.36zM245.2 378.49c-.02-.01-.03-.03-.05-.04.02.01.06.03.05.04zm-36.03 66.43c-.02.13.01.29-.17.28.06-.09.12-.18.17-.28zM752.1 431.15c-.59-13.71-.52-25.54-6.29-37.91.2-4.03-2.33-7.72-3-11.99-19.65-56.01-83.74-62.89-134.15-78.22-12.26-2.85-25.36-18.57-19.53.29 8.28 46.96 53.65 40.65 72.53 66.82 22.09 54.7 5.04 42.88 64.13 72.6 28.6 34.66 24.8 29.31 26.31-11.59z" class="tw-fill-pink-400"/>
-          </g>
-          </a>
-
-          // bazoo
-          <a @mouseover="part='Triceps'" @mouseover.away="part=='Triceps'?part='':''" href="/collections/triceps">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_11" class="tw-sst102">
-            <path d="M785.28 571.87c-6.26-16.75-7.08-35.79-14.76-50.98-16.71-37.19-31.85-83.59-78.13-89.85-13.38-4.91-25.1-6.53-22.88 12.71-1.33 4.1-2.18 9.75-.66 15.02-1.43 6.81-3.28 12.43-2.31 19.2-1.73 3.9-1.75 9.42-1.19 12.93-2.87 23.84-8.23 42.4-5.42 66.35 21.09 20.34 36.77 126.06 72.72 70.55 4.13-38.57-29.7-130.4 39.6-62.67-.28 4.38 13.33 13.61 13.03 6.74zM673.41 455.91c.11-.11.05-.05 0 0-.03-.18-.02-.24 0 0zM282.42 533.91c-6.86-31.04-6.35-67.5-11.92-101-4.76-11.78-22.98-.69-32.67 2.5-44.54 10.56-55.94 64.78-73.28 102.51 1.27 10.1-13.93 33.39-5.15 36.17 7.87-2.7 11.15-10.28 15.44-16.25 15.99-6.99 30.35-28.7 38.35-5.87 2.75 19.76-5.05 41.08-3.94 60.97-4.07 13.34 2.02 29.58 15.13 29.84 30.76 1.47 34.78-57.79 52.06-80.85 10.15-3.31 5.18-18.89 5.98-28.02zm-67.92-79.99h-.13c.08-.06.17-.15.13 0zm26.88 140.83c.08.06.09.11-.01.16 0-.05.01-.1.01-.16zm27-138.84c-.1-.1-.26-.19-.01-.22 0 .08.01.15.01.22zm2 1.2c-.02-.18-.01-.22.11-.08-.04.02-.08.05-.11.08zm4.15 30.81c-.07 0-.18.03-.15-.08.04.03.1.05.15.08z" class="tw-fill-blue-400"/>
-          </g>
-          </a>
-
-          // kamar
-          <a @mouseover="part='Back'" @mouseover.away="part=='Back'?part='':''" href="/collections/back">
-          <g class="tw-opacity-20 tw-transform tw-transition tw-duration-500 hover:tw-opacity-50" id="Layer_12" class="tw-sst102">
-            <path d="M364.26 706.74c11.82 10.36 45.35 6.33 46.93-13.97 5.78-28.75 16.45-52.93 33.24-75.38-8.06-25.44-28.18-47.5-37.42-73.89-7.53-22.52-16.96-56.07-43.77-65.49-23.66-4.47-46.69-5.01-63.99-24.15-7.78-9.57-18.28-5.71-23.87 1.58-5.12 8.69 1.1 18.62.76 27.44 1.29 13.07 6.4 25.58 3.4 38.74-4.41 40.81 18.78 77.87 32.77 115.06 15.06 20.87 40.41 42.87 51.95 70.06zm30.9-29.15c.46-.26.09.44.08.74-.4-.3-.53-.59-.08-.74zm-45.84-190.77c.03.11.01.11-.07.02.02 0 .04-.01.07-.02zm-41.18 26.11c-.04-.08.04-.07.1-.09-.03.04-.06.06-.1.09zm61.42 103.16c.25.62.02.37-.37.14.12-.04.25-.08.37-.14zm17.68-67.25c-.15-.46-.43-.9-.43-1.38.12.38.48.96.43 1.38zm8.76 75.49c-.12-.11-.2-.22-.26-.33.13.12.51.19.26.33zM286.25 512.94c0-.06 0-.03 0 0-.05-.03-.03-.05 0 0zm125.62 103.38c-.18-1.34-.09-1.3 1.19-.73-.11.46-.39.81-1.19.73zm-130.61-87.9v-.57c.03.21.38.7 0 .57zm144.17 113.85c.14.15.27.31.38.49-.19-.09-.31-.27-.38-.49zM286.25 448.01zm71.57 222.01c.05.32.11.64.16.95-.6-.22-.44-.49-.16-.95z" class="tw-fill-red-400"/>
-            <path d="M277.71 417.32c72.6 99.43 171.35 40.95 104.61-66.95-27.98-61.68-31.97 5.55-59.01 16.51-24.31 14.62-70.14-1.82-45.6 50.44zm19.54-26.48c0 .01 0 0 0 0 .01.01.01.02 0 0zm76.83-.49c1.56-1.35 3.02-2.65 4.3-4.15-1.04 1.67-2.59 2.99-4.3 4.15zm-75.82-8.54c.01.02.03.05-.01.05 0-.02 0-.03.01-.05zM578.7 772.93c-17.9-22.43-36.06-44.2-47.4-70.12-8.21-32.34-13.31-90.27-61.05-73.01-49.22-18.79-44.8 53.94-61.24 80.74-9.23 25.46-31.4 41.49-43.68 64.32-.71 27.6 43.43 7.18 59.96 17.9 12.45 3.03 24.44 31.69 38.86 15.77 7.13-24.69 5.48-53.01 6.34-77.71 3.17-49.18 1.63-47.49 4.63.17 1.88 16.07-4.32 73.67 12.4 81.92 17.31-2.77 26.7-23.87 46.71-24.16 13.54-2.61 50.37 8.3 44.47-15.82zm-102.36-13.88c.15-1.18-.48-3.39.57-1.28.58.18-.57.81-.57 1.28zm-12.15-128.34c.01.04.03.08.04.13-.07-.05-.14-.07-.04-.13zm87.08 110.9c-.56-.07.13-.53.17-.84.02.26-.02.54-.17.84zm-104.04 9.95c.61.35.48.78-.35.86.11-.29.23-.57.35-.86zm5.04-6.4c-.19.29-.43.34-.68.26.17-.07.83-.46.68-.26zm6.3-16.33c-.12-.04-.32.1-.34 0 .11 0 .25-.05.34 0zm47.04 45.76c.3-.38.39-.66.79-.26-.26.09-.51.17-.79.26zm.04-57.26c.8-.16 1.59-.28 2.36-.33-.8.14-1.59.25-2.36.33zM490 758.63c.02.23.05.46.07.68-.46-.19-.36-.43-.07-.68zm-13.58-91.36c.03.04.07.1.09.15-.02-.05-.06-.1-.09-.15zm-32.84 3.49c.21-.13-.1.16-.18.28.07-.09.12-.18.18-.28zm13.44-23.15c.21.09.41.21.62.36-.32-.06-.51-.19-.62-.36zm.79 4.87c.13-.31.21-.25.38 0h-.38zm6.83-20.34c.08.07.19.12.23.22-.07-.08-.21-.12-.23-.22zm-16.37 8.03c.52-.12 1.05-.22 1.58-.3-.57.48-1.09.53-1.58.3zm-11.65 38.15c.02.01.02.01 0 0zm32.7 63.36c-.08.07-.04.04 0 0 .01.11.01.19 0 0zm-.1-8.85c-.12-.02-.23-.06-.35-.09.16-.01.41-.16.35.09zm6.04-20c.26.14.36.24 0 .26a1.13 1.13 0 0 1 0-.26zm74.54 47.14c-.5-.83-.98-1.42-1.45-1.83 1.73-1.04 1.19.35 1.45 1.83zM420.69 680.2c-.1-.1-.19-.19-.29-.3.1.08.2.19.29.3zm51.56 5.53c1.54-1.05-.14-2.6.45-3.58.35 1.82 1.59 7.12-.45 3.58zm3.43 12.47c-.4-.11-.79-.32-1.21-.44.65-.2.99.02 1.21.44zM673.31 391.82c-3.73-25.44-35.8-13.37-50.97-24.01-6.49-7.57-18.95-10.13-20.98-21.96-9.51-34.79-36.34-13.96-41.18 9.67-7.55 18.05-21.5 34.06-19.43 55.13 1.37 22.4 9.18 51.67 31.49 57.3 42.61 6.13 100.51-30.97 101.07-76.13zM567.2 407.81c0 .02.04.04.01.05-.1.02-.06 0-.01-.05zm20.47-2.07c-.81.32-1.51 0-2.21-.5.74.17 1.47.33 2.21.5zm-31.61-8.31c-.13-.06-.18-.14-.19-.23.07.08.13.15.19.23zm93.13-23.49zm-76.96 93.7z" class="tw-fill-red-400"/>
-            <path d="M406.28 492.04c-2.27 44.46 72.44 199.86 60.89 63.42 2.47-40.66 3.04-84.01 2.96-125.5-11.73-8.34-27.93.35-42.1-5.01-24.42-15.16-19.54 52.93-21.75 67.09zm24.02-17.29c.12.07.3.16.16.28-.03-.09-.09-.18-.16-.28zm-4.71 21.54h-.13c.05-.01.11-.07.13 0zm10.59-10.41.12-.03c-.03.01-.08.02-.12.03zm-5.17 30.88c-.34.53-.44.75-.81.13.24-.07.5-.11.81-.13zm-22.77-10.91c0 .06 0 .03 0 0 .11.02.1.05 0 0zm41.55 23.08c-.02-.53.81-.3 1.08-.17-.35.06-.71.12-1.08.17zm-33.57-15.52c.33-.27.45.19.39.43-.13-.14-.26-.29-.39-.43zm50.02 40.4c0 .03 0 .01 0 0 .02.02.05.05 0 0zm-15.13-122.53c.13-.33.25-.66.35-1.01.1.47.1.86-.35 1.01zM671.15 458.21c-16.97-28.67-36.57 14.37-59.71 13.79-47.98.7-62.8 36.32-75.79 74.96-8.3 18.84-16.43 41.15-30.36 58-3.85 2.71-7.32 10.69-3.12 13.92 32.35 26.98 16.12 111.59 75.06 89.95 11.86-14.3 22.87-34.47 35.44-49.73 28.58-25.99 38.38-69.59 51.93-103.78-1.36-33.14 3.61-65.95 6.55-97.11zm-96.81 197.07c.05-.18.02-.09 0 0-.14-.06.04-.17 0 0zm16.77-68.11c.13-.07.26-.11.38-.14-.13.14-.28.46-.38.14zm31.75-42.27c-.1.08-.05.04 0 0 .18-.07-.08.08 0 0zm31.39-13.88c-.18 0-.14-.06-.03-.18.02.07.02.12.03.18zm-79.99 8.2c.17-.11.58.05.97.29-.3-.1-1.16-.12-.97-.29zm-11.62-3.51c.35.2-.61-.23-.91-.35.29.07.58.18.91.35zm24.99 135.98c-.43.15.36-2.94.29-1.34.07.44-.12 1.31-.29 1.34z" class="tw-fill-red-400"/>
-            <path d="M475.28 449.37c1.47 53.44 1.98 106.47 3.76 159.4 27.57 12.25 50.99-77.09 58.23-98.84 3.77-11.55 3.04-92.13-15.03-87.24-19.59 10.51-55.32-8.67-46.96 26.68zm40.01 68.2c-.09-.1.18-.54.28-.83.49-.01-.21.56-.28.83zm-19.66 11.62c-1-.1-.94-.3-.38-1.09.12.4.25.76.38 1.09zm6.97-14.24c.01-.09.13-.21.27-.31-.09.1-.17.21-.27.31zm2.18-30.26c-1.5-1.23.7-1.17 1.76-1.08-.16.67-.58 1.16-1.76 1.08zm-26.29 41.33c-.24.17-.23.04-.21-.17.07.05.14.11.21.17zm.76 38.9c-.07.13-.07.04-.06-.05.02.02.04.03.06.05zm58.99-86.07c-.05-.01.01-.02.03-.03l-.03.03zm-59 76.99c-.05-.23.11-.12.27-.07-.09.03-.18.05-.27.07zm57.33-49.31c.34-.35.78-.98.66-.1-.22.03-.44.06-.66.1zm-3.08-46.18c-.09.04-.18.06-.27.08.09-.02.23-.16.27-.08z" class="tw-fill-red-400"/>
-          </g>
-          </a>
-        </svg>
-    </div>
-        <button @click="front?(front=false,back=true):(front=true,back=false)" x-show="!loading" class="tw-z-[1] tw-flex tw-flex-row tw-items-end tw-justify-end tw-w-14" x-cloak>
-          <svg class="tw-w-12 tw-h-12 tw-text-teal-500 hover:tw-text-gray-500" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M11.999 1.993c-5.514.001-10 4.487-10 10.001s4.486 10 10.001 10c5.513 0 9.999-4.486 10-10 0-5.514-4.486-10-10.001-10.001zM12 19.994c-4.412 0-8.001-3.589-8.001-8s3.589-8 8-8.001C16.411 3.994 20 7.583 20 11.994c-.001 4.411-3.59 8-8 8z"></path><path d="M12 10.994H8v2h4V16l4.005-4.005L12 7.991z"></path></svg>
-        </button>
-      </div>
-      </div>
-    <div class="tw-col-span-3 tw-flex tw-flex-row tw-items-center tw-justify-center -tw-mt-8">
-        <img src="{{ 'surface.png' | asset_url }}" alt="" class="tw-h-28 tw-mr-5 tw-pl-5 tw-pr-0 md:tw-pl-0">
-    </div>
-      <div class="tw-mt-4 tw-text-lg tw-text-teal-500">
-
-      </div>
-    </div>
-  </section>
-{% endif %}
 
     {% sections 'footer-group' %}
 
@@ -634,93 +327,50 @@ fetch("https://ipapi.co/json/")
         cart_change_url: '{{ routes.cart_change_url }}',
         cart_update_url: '{{ routes.cart_update_url }}',
         cart_url: '{{ routes.cart_url }}',
-        predictive_search_url: '{{ routes.predictive_search_url }}'
+        predictive_search_url: '{{ routes.predictive_search_url }}',
       };
 
       window.cartStrings = {
         error: `{{ 'sections.cart.cart_error' | t }}`,
-        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
-      }
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+      };
 
       window.variantStrings = {
         addToCart: `{{ 'products.product.add_to_cart' | t }}`,
         soldOut: `{{ 'products.product.sold_out' | t }}`,
         unavailable: `{{ 'products.product.unavailable' | t }}`,
         unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
-      }
+      };
+
+      window.quickOrderListStrings = {
+        itemsAdded: `{{ 'sections.quick_order_list.items_added.other' | t: quantity: '[quantity]' }}`,
+        itemAdded: `{{ 'sections.quick_order_list.items_added.one' | t: quantity: '[quantity]' }}`,
+        itemsRemoved: `{{ 'sections.quick_order_list.items_removed.other' | t: quantity: '[quantity]' }}`,
+        itemRemoved: `{{ 'sections.quick_order_list.items_removed.one' | t: quantity: '[quantity]' }}`,
+        viewCart: `{{- 'sections.quick_order_list.view_cart' | t -}}`,
+        each: `{{- 'sections.quick_order_list.each' | t: money: '[money]' }}`,
+        min_error: `{{- 'sections.quick_order_list.min_error' | t: min: '[min]' }}`,
+        max_error: `{{- 'sections.quick_order_list.max_error' | t: max: '[max]' }}`,
+        step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`,
+      };
 
       window.accessibilityStrings = {
         imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
         shareSuccess: `{{ 'general.share.success_message' | t }}`,
         pauseSlideshow: `{{ 'sections.slideshow.pause_slideshow' | t }}`,
         playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
-      }
+        recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
+        recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
+        countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
+      };
     </script>
 
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
-    {% if template == 'index' %}
- 
-<style>
-.shopify-section-group-header-group.announcement-bar-section{
-height: 5px;
-}
-.header-wrapper{
-position: absolute;
-width: 100%;
-background: transparent;
-}
-.header-wrapper .header{
-margin-top: 20px;
-}
-</style>
- 
-{% endif %}
-<style>
-.header__menu-item{
-    font-size: 20px !important;
-}
- 
-@media (max-width: 749px){
-    .menu-drawer__menu-item{
-    font-size: 12px !important;
-}
-}
-</style>
-<style>
-   .header-wrapper *{
-      color: #000000;
-   }
-   .global-settings-popup, .header__submenu.global-settings-popup{
-      border-color: #ffffff !important;
-   }
-</style>
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.magic('tooltip', el => message => {
-            let instance = tippy(el, { content: message, trigger: 'manual' })
-             instance.show()
-             setTimeout(() => {
-                instance.hide()
-                 setTimeout(() => instance.destroy(), 150)
-            }, 2000)
-        })
- 
-        Alpine.directive('tooltip', (el, { expression }) => {
-            tippy(el, { content: expression })
-        })
-    })
-</script>
-              <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KT955VZK"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-  {%- render "ecom_footer"-%}
-  
-            
 
-            
-            
-            </body>
+    {%- if settings.cart_type == 'drawer' -%}
+      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+  </body>
 </html>
