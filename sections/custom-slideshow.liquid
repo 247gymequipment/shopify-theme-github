@@ -1,31 +1,37 @@
 {% comment %}
-Custom Advanced Slideshow with:
-✅ Desktop + Mobile Images
-✅ Pagination dots outside the image
-✅ Slide height control
-✅ Auto-rotate, layout, image behaviour
-✅ Buttons & animations per slide
+Custom Advanced Slideshow
+- Desktop + Mobile image support
+- Per-slide animations
+- Multiple buttons
+- Background video support
+- Overlay color & opacity
+- Slideshow-level controls
 {% endcomment %}
 
-<section class="custom-slideshow" role="region" aria-label="{{ section.settings.accessibility_info }}">
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
+
+<section class="custom-slideshow custom-slideshow--{{ section.settings.layout }}" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight" aria-label="{{ section.settings.accessibility_info }}">
   <div class="custom-slider" id="CustomSlider-{{ section.id }}">
     {% for block in section.blocks %}
       {% assign slide_id = 'slide-' | append: section.id | append: '-' | append: forloop.index %}
-      <div class="custom-slide animate--{{ block.settings.slide_animation }}" id="{{ slide_id }}" data-duration="{{ block.settings.slide_duration | default: 5 }}">
-        
+      <div 
+        class="custom-slide animate--{{ block.settings.slide_animation }}"
+        id="{{ slide_id }}"
+        data-duration="{{ block.settings.slide_duration | default: 5 }}">
+
         {% if block.settings.video_url != blank %}
           <video autoplay loop muted playsinline class="slide-media">
             <source src="{{ block.settings.video_url }}" type="video/mp4">
           </video>
         {% else %}
-          <div class="slide-media">
-            <picture>
-              {% if block.settings.mobile_image != blank %}
-                <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_image | image_url: width: 1200 }}">
-              {% endif %}
-              <img src="{{ block.settings.desktop_image | image_url: width: 2000 }}" alt="{{ block.settings.heading | escape }}">
-            </picture>
-          </div>
+          <picture>
+            {% if block.settings.mobile_image != blank %}
+              <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_image | image_url: width: 1500 }}">
+            {% endif %}
+            {% if block.settings.desktop_image != blank %}
+              <img class="slide-media" src="{{ block.settings.desktop_image | image_url: width: 2000 }}" alt="{{ block.settings.heading | escape }}">
+            {% endif %}
+          </picture>
         {% endif %}
 
         <div class="overlay" style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
@@ -34,52 +40,50 @@ Custom Advanced Slideshow with:
           {% if block.settings.heading != blank %}
             <h2 class="slide-heading">{{ block.settings.heading }}</h2>
           {% endif %}
+
           {% if block.settings.subheading != blank %}
             <p class="slide-subheading" style="font-family: {{ block.settings.subheading_font }};">{{ block.settings.subheading }}</p>
           {% endif %}
 
           <div class="slide-buttons">
-            {% if block.settings.button_label_1 != blank %}
-              <a href="{{ block.settings.button_link_1 }}" class="btn">{{ block.settings.button_label_1 }}</a>
-            {% endif %}
-            {% if block.settings.button_label_2 != blank %}
-              <a href="{{ block.settings.button_link_2 }}" class="btn">{{ block.settings.button_label_2 }}</a>
-            {% endif %}
-            {% if block.settings.button_label_3 != blank %}
-              <a href="{{ block.settings.button_link_3 }}" class="btn">{{ block.settings.button_label_3 }}</a>
-            {% endif %}
+            <div class="slide-buttons">
+  {% for i in (1..3) %}
+    {% capture label_key %}button_label_{{ i }}{% endcapture %}
+    {% capture link_key %}button_link_{{ i }}{% endcapture %}
+    {% assign label = block.settings[label_key] %}
+    {% assign link = block.settings[link_key] %}
+    {% if label %}
+      <a href="{{ link }}" class="btn">{{ label }}</a>
+    {% endif %}
+  {% endfor %}
+</div>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 
-  <!-- Pagination Dots -->
-  <div class="custom-pagination">
-    {% for block in section.blocks %}
-      <button class="dot" data-slide="{{ forloop.index }}"></button>
-    {% endfor %}
-  </div>
-
-  <!-- Prev / Next Buttons -->
-  <button class="slider-btn prev-btn" aria-label="Previous Slide">‹</button>
-  <button class="slider-btn next-btn" aria-label="Next Slide">›</button>
+  {% if section.blocks.size > 1 %}
+    <div class="slider-controls">
+      <button type="button" class="prev-slide">❮</button>
+      <button type="button" class="next-slide">❯</button>
+    </div>
+  {% endif %}
 </section>
 
 <script>
 (function() {
   const slider = document.getElementById('CustomSlider-{{ section.id }}');
-  const slides = slider.querySelectorAll('.custom-slide');
-  const dots = document.querySelectorAll('.custom-pagination .dot');
+  if (!slider) return;
+  let slides = slider.querySelectorAll('.custom-slide');
   let current = 0;
 
   function showSlide(index) {
     slides.forEach((s, i) => s.style.display = i === index ? 'block' : 'none');
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
-    const duration = parseInt(slides[index].dataset.duration) * 1000 || 5000;
+    const duration = parseInt(slides[index].dataset.duration) * 1000 || {{ section.settings.change_slides_speed | times: 1000 }};
     clearTimeout(window._slideTimer);
-    if ({{ section.settings.auto_rotate | json }}) {
-      window._slideTimer = setTimeout(() => nextSlide(), duration);
+    if ({{ section.settings.auto_rotate }}) {
+      window._slideTimer = setTimeout(nextSlide, duration);
     }
   }
 
@@ -93,12 +97,13 @@ Custom Advanced Slideshow with:
     showSlide(current);
   }
 
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => { current = index; showSlide(index); });
-  });
+  document.querySelector('.next-slide')?.addEventListener('click', nextSlide);
+  document.querySelector('.prev-slide')?.addEventListener('click', prevSlide);
 
-  document.querySelector('.next-btn').addEventListener('click', nextSlide);
-  document.querySelector('.prev-btn').addEventListener('click', prevSlide);
+  slider.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
 
   showSlide(0);
 })();
@@ -108,69 +113,66 @@ Custom Advanced Slideshow with:
 .custom-slideshow {
   position: relative;
   overflow: hidden;
-  width: 100%;
 }
 .custom-slide {
   position: relative;
   width: 100%;
+  height: {{ section.settings.slide_height | default: '70vh' }};
   display: none;
-  transition: opacity 1s ease;
 }
-.slide-media picture,
-.slide-media img,
-.slide-media video {
+.custom-slide img,
+.custom-slide video {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  object-fit: cover;
 }
-
-/* Maintain Aspect Ratios */
-.slide-media {
-  position: relative;
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  z-index: 2;
 }
-.slide-media::before {
-  content: "";
-  display: block;
-  padding-bottom: 42%; /* Desktop ratio */
+.slide-content {
+  position: absolute;
+  z-index: 3;
+  bottom: 20%;
+  left: 10%;
+  color: white;
 }
-@media (max-width: 749px) {
-  .slide-media::before {
-    padding-bottom: 65%; /* Taller for mobile */
-  }
-}
-
-/* Pagination below image */
-.custom-pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-.custom-pagination .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #000;
-  background: transparent;
-  margin: 0 4px;
-  cursor: pointer;
-}
-.custom-pagination .dot.active {
+.slide-buttons .btn {
+  margin-right: 10px;
   background: #000;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
 }
+.animate--fade { animation: fadeIn 1s ease; }
+.animate--slide-in { animation: slideIn 1s ease; }
+.animate--zoom { animation: zoomIn 1s ease; }
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+@keyframes slideIn { from {transform: translateX(100%);} to {transform: translateX(0);} }
+@keyframes zoomIn { from {transform: scale(0.8);} to {transform: scale(1);} }
 
-/* Prev/Next Buttons */
-.slider-btn {
+.slider-controls {
   position: absolute;
   top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   transform: translateY(-50%);
+  z-index: 5;
+}
+.slider-controls button {
   background: rgba(0,0,0,0.5);
-  color: #fff;
+  color: white;
   border: none;
-  padding: 8px 12px;
+  font-size: 24px;
+  padding: 10px;
   cursor: pointer;
 }
-.prev-btn { left: 10px; }
-.next-btn { right: 10px; }
 </style>
 
 {% schema %}
@@ -182,11 +184,10 @@ Custom Advanced Slideshow with:
       { "value": "grid", "label": "Grid" }
     ], "default": "full" },
     { "type": "select", "id": "slide_height", "label": "Slide Height", "options": [
-      { "value": "adapt", "label": "Adapt to first image" },
-      { "value": "small", "label": "Small" },
-      { "value": "medium", "label": "Medium" },
-      { "value": "large", "label": "Large" }
-    ], "default": "medium" },
+      { "value": "50vh", "label": "Small" },
+      { "value": "70vh", "label": "Medium" },
+      { "value": "100vh", "label": "Large" }
+    ], "default": "70vh" },
     { "type": "select", "id": "pagination_style", "label": "Pagination Style", "options": [
       { "value": "dots", "label": "Dots" },
       { "value": "numbers", "label": "Numbers" },
@@ -194,7 +195,7 @@ Custom Advanced Slideshow with:
     ], "default": "dots" },
     { "type": "checkbox", "id": "auto_rotate", "label": "Auto-rotate slides", "default": true },
     { "type": "range", "id": "change_slides_speed", "label": "Change slides every", "min": 3, "max": 10, "step": 1, "default": 5 },
-    { "type": "select", "id": "image_behavior", "label": "Image behavior", "options": [
+    { "type": "select", "id": "image_behavior", "label": "Image Behavior", "options": [
       { "value": "none", "label": "None" },
       { "value": "ambient", "label": "Ambient" }
     ], "default": "none" },
