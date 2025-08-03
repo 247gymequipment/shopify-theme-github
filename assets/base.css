@@ -3827,8 +3827,56 @@ details-disclosure > details {
   background-color: #61c5c6;
   top: 38px; /* Position just below clearance */
 }
+/* ✅ Fix slideshow height & spacing on mobile */
+@media screen and (max-width: 768px) {
+  .slideshow__media img {
+    object-fit: cover !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 250px !important; /* Adjust height */
+  }
 
+  .slideshow,
+  .slideshow__slide {
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  /* Reduce gap between slideshow and dots */
+  .slideshow__controls {
+    margin-top: 5px !important;
+  }
 }
+.header__heading-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header__heading-wrapper--desktop-top {
+  flex-direction: column;
+  align-items: center;
+}
+.header__heading-wrapper--mobile-left {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.header__heading-wrapper--mobile-right {
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-end;
+}
+.header__inline-menu--desktop-center {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.header__inline-menu--mobile-left {
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+}
+
 
 
 /* Usage:
