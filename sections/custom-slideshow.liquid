@@ -1,89 +1,110 @@
 {% comment %}
-Custom Advanced Slideshow
-- Desktop + Mobile image support
-- Per-slide animations
-- Multiple buttons
-- Background video support
-- Overlay color & opacity
-- Slideshow-level controls
+Custom Advanced Slideshow – With desktop+mobile images, video, overlay, buttons, animations
 {% endcomment %}
 
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-
-<section class="custom-slideshow custom-slideshow--{{ section.settings.layout }}" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight" aria-label="{{ section.settings.accessibility_info }}">
-  <div class="custom-slider" id="CustomSlider-{{ section.id }}">
+<section 
+  id="CustomSlideshow-{{ section.id }}" 
+  class="custom-slideshow layout-{{ section.settings.layout }} height-{{ section.settings.slide_height }}">
+  
+  <div class="custom-slideshow-wrapper">
     {% for block in section.blocks %}
       {% assign slide_id = 'slide-' | append: section.id | append: '-' | append: forloop.index %}
       <div 
-        class="custom-slide animate--{{ block.settings.slide_animation }}"
         id="{{ slide_id }}"
+        class="custom-slide animate--{{ block.settings.slide_animation }}"
         data-duration="{{ block.settings.slide_duration | default: 5 }}">
 
+        <!-- ✅ BACKGROUND IMAGE OR VIDEO -->
         {% if block.settings.video_url != blank %}
-          <video autoplay loop muted playsinline class="slide-media">
+          <video autoplay loop muted playsinline class="slide-media video-media">
             <source src="{{ block.settings.video_url }}" type="video/mp4">
           </video>
         {% else %}
           <picture>
             {% if block.settings.mobile_image != blank %}
-              <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_image | image_url: width: 1500 }}">
+              <source 
+                media="(max-width: 749px)" 
+                srcset="{{ block.settings.mobile_image | image_url: width: 1200 }}">
             {% endif %}
             {% if block.settings.desktop_image != blank %}
-              <img class="slide-media" src="{{ block.settings.desktop_image | image_url: width: 2000 }}" alt="{{ block.settings.heading | escape }}">
+              <img 
+                class="slide-media" 
+                src="{{ block.settings.desktop_image | image_url: width: 2000 }}" 
+                alt="{{ block.settings.heading | escape }}">
             {% endif %}
           </picture>
         {% endif %}
 
-        <div class="overlay" style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+        <!-- ✅ OVERLAY -->
+        <div 
+          class="slide-overlay" 
+          style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }}">
+        </div>
 
-        <div class="slide-content" style="font-family: {{ block.settings.heading_font }};">
+        <!-- ✅ TEXT + BUTTONS -->
+        <div 
+          class="slide-content"
+          style="padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px; max-width: {{ block.settings.content_width }}px">
+          
           {% if block.settings.heading != blank %}
-            <h2 class="slide-heading">{{ block.settings.heading }}</h2>
+            <h2 class="slide-heading" style="font-family: {{ block.settings.heading_font }};">
+              {{ block.settings.heading }}
+            </h2>
           {% endif %}
 
           {% if block.settings.subheading != blank %}
-            <p class="slide-subheading" style="font-family: {{ block.settings.subheading_font }};">{{ block.settings.subheading }}</p>
+            <p class="slide-subheading" style="font-family: {{ block.settings.subheading_font }};">
+              {{ block.settings.subheading }}
+            </p>
           {% endif %}
 
           <div class="slide-buttons">
-            <div class="slide-buttons">
-  {% for i in (1..3) %}
-    {% capture label_key %}button_label_{{ i }}{% endcapture %}
-    {% capture link_key %}button_link_{{ i }}{% endcapture %}
-    {% assign label = block.settings[label_key] %}
-    {% assign link = block.settings[link_key] %}
-    {% if label %}
-      <a href="{{ link }}" class="btn">{{ label }}</a>
-    {% endif %}
-  {% endfor %}
-</div>
+            {% for i in (1..3) %}
+              {% assign label_var = 'button_label_' | append: i %}
+              {% assign link_var = 'button_link_' | append: i %}
+              {% if block.settings[label_var] != blank %}
+                <a href="{{ block.settings[link_var] }}" class="btn">{{ block.settings[label_var] }}</a>
+              {% endif %}
+            {% endfor %}
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 
+  <!-- ✅ PAGINATION DOTS -->
   {% if section.blocks.size > 1 %}
-    <div class="slider-controls">
-      <button type="button" class="prev-slide">❮</button>
-      <button type="button" class="next-slide">❯</button>
+    <div class="custom-slideshow-pagination {% if section.settings.pagination_style == 'numbers' %}pagination-numbers{% endif %}">
+      {% for block in section.blocks %}
+        <button class="dot" data-slide="{{ forloop.index }}">{{ forloop.index }}</button>
+      {% endfor %}
     </div>
+  {% endif %}
+
+  <!-- ✅ ARROWS -->
+  {% if section.blocks.size > 1 %}
+    <button class="nav-arrow prev" aria-label="Previous slide">‹</button>
+    <button class="nav-arrow next" aria-label="Next slide">›</button>
   {% endif %}
 </section>
 
 <script>
 (function() {
-  const slider = document.getElementById('CustomSlider-{{ section.id }}');
+  const slider = document.querySelector('#CustomSlideshow-{{ section.id }}');
   if (!slider) return;
-  let slides = slider.querySelectorAll('.custom-slide');
+
+  const slides = slider.querySelectorAll('.custom-slide');
+  const dots = slider.querySelectorAll('.custom-slideshow-pagination .dot');
   let current = 0;
+  let timer;
 
   function showSlide(index) {
     slides.forEach((s, i) => s.style.display = i === index ? 'block' : 'none');
-    const duration = parseInt(slides[index].dataset.duration) * 1000 || {{ section.settings.change_slides_speed | times: 1000 }};
-    clearTimeout(window._slideTimer);
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    const duration = parseInt(slides[index].dataset.duration) * 1000 || ({{ section.settings.change_slides_speed | default: 5 }} * 1000);
+    clearTimeout(timer);
     if ({{ section.settings.auto_rotate }}) {
-      window._slideTimer = setTimeout(nextSlide, duration);
+      timer = setTimeout(() => nextSlide(), duration);
     }
   }
 
@@ -97,84 +118,110 @@ Custom Advanced Slideshow
     showSlide(current);
   }
 
-  document.querySelector('.next-slide')?.addEventListener('click', nextSlide);
-  document.querySelector('.prev-slide')?.addEventListener('click', prevSlide);
-
-  slider.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') nextSlide();
-    if (e.key === 'ArrowLeft') prevSlide();
-  });
+  slider.querySelector('.next')?.addEventListener('click', nextSlide);
+  slider.querySelector('.prev')?.addEventListener('click', prevSlide);
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { current = i; showSlide(i); }));
 
   showSlide(0);
 })();
 </script>
-
 <style>
 .custom-slideshow {
   position: relative;
+  width: 100%;
   overflow: hidden;
 }
+
 .custom-slide {
   position: relative;
   width: 100%;
-  height: {{ section.settings.slide_height | default: '70vh' }};
   display: none;
+  text-align: center;
 }
-.custom-slide img,
-.custom-slide video {
+
+.slide-media,
+.slide-media img,
+.video-media {
   width: 100%;
-  height: 100%;
+  height: auto;
+  display: block;
   object-fit: cover;
 }
-.overlay {
+
+.slide-overlay {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0; left: 0;
-  z-index: 2;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1;
 }
+
 .slide-content {
   position: absolute;
-  z-index: 3;
-  bottom: 20%;
-  left: 10%;
-  color: white;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
 }
+
 .slide-buttons .btn {
-  margin-right: 10px;
+  margin: 5px;
   background: #000;
   color: #fff;
   padding: 10px 20px;
-  text-decoration: none;
   display: inline-block;
+  text-decoration: none;
   border-radius: 4px;
 }
-.animate--fade { animation: fadeIn 1s ease; }
-.animate--slide-in { animation: slideIn 1s ease; }
-.animate--zoom { animation: zoomIn 1s ease; }
-@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-@keyframes slideIn { from {transform: translateX(100%);} to {transform: translateX(0);} }
-@keyframes zoomIn { from {transform: scale(0.8);} to {transform: scale(1);} }
 
-.slider-controls {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  z-index: 5;
+/* ✅ PAGINATION DOTS */
+.custom-slideshow-pagination {
+  text-align: center;
+  margin-top: 10px;
+  position: relative;
+  z-index: 3;
 }
-.slider-controls button {
-  background: rgba(0,0,0,0.5);
-  color: white;
+.custom-slideshow-pagination .dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 5px;
+  border-radius: 50%;
+  background: #bbb;
   border: none;
-  font-size: 24px;
-  padding: 10px;
   cursor: pointer;
 }
-</style>
+.custom-slideshow-pagination .dot.active {
+  background: #333;
+}
 
+/* ✅ NAVIGATION ARROWS */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 3;
+}
+.nav-arrow.prev { left: 10px; }
+.nav-arrow.next { right: 10px; }
+
+/* ✅ MOBILE IMAGE SIZING */
+@media (max-width: 749px) {
+  .slide-media {
+    height: auto;
+    max-height: 60vh; /* Adjust for mobile */
+  }
+  .slide-content {
+    width: 90%;
+  }
+}
+</style>
 {% schema %}
 {
   "name": "Custom Advanced Slideshow",
@@ -183,24 +230,32 @@ Custom Advanced Slideshow
       { "value": "full", "label": "Full width" },
       { "value": "grid", "label": "Grid" }
     ], "default": "full" },
+
     { "type": "select", "id": "slide_height", "label": "Slide Height", "options": [
-      { "value": "50vh", "label": "Small" },
-      { "value": "70vh", "label": "Medium" },
-      { "value": "100vh", "label": "Large" }
-    ], "default": "70vh" },
+      { "value": "adapt", "label": "Adapt to first image" },
+      { "value": "small", "label": "Small" },
+      { "value": "medium", "label": "Medium" },
+      { "value": "large", "label": "Large" }
+    ], "default": "medium" },
+
     { "type": "select", "id": "pagination_style", "label": "Pagination Style", "options": [
       { "value": "dots", "label": "Dots" },
       { "value": "numbers", "label": "Numbers" },
       { "value": "counter", "label": "Counter" }
     ], "default": "dots" },
+
     { "type": "checkbox", "id": "auto_rotate", "label": "Auto-rotate slides", "default": true },
+
     { "type": "range", "id": "change_slides_speed", "label": "Change slides every", "min": 3, "max": 10, "step": 1, "default": 5 },
+
     { "type": "select", "id": "image_behavior", "label": "Image Behavior", "options": [
       { "value": "none", "label": "None" },
       { "value": "ambient", "label": "Ambient" }
     ], "default": "none" },
+
     { "type": "text", "id": "accessibility_info", "label": "Slideshow description", "default": "Slideshow about our brand" }
   ],
+
   "blocks": [
     {
       "type": "slide",
@@ -209,27 +264,39 @@ Custom Advanced Slideshow
         { "type": "image_picker", "id": "desktop_image", "label": "Desktop Image" },
         { "type": "image_picker", "id": "mobile_image", "label": "Mobile Image" },
         { "type": "url", "id": "video_url", "label": "Background Video URL" },
+
         { "type": "text", "id": "heading", "label": "Heading" },
         { "type": "text", "id": "subheading", "label": "Subheading" },
+
         { "type": "select", "id": "slide_animation", "label": "Slide Animation", "options": [
           { "value": "fade", "label": "Fade" },
           { "value": "slide-in", "label": "Slide In" },
           { "value": "zoom", "label": "Zoom" }
         ], "default": "fade" },
+
         { "type": "range", "id": "slide_duration", "label": "Slide Duration (seconds)", "min": 3, "max": 10, "step": 1, "default": 5 },
+
         { "type": "color", "id": "overlay_color", "label": "Overlay Color", "default": "#000000" },
         { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity (%)", "min": 0, "max": 100, "step": 10, "default": 50 },
+
         { "type": "text", "id": "button_label_1", "label": "Button 1 Label" },
         { "type": "url", "id": "button_link_1", "label": "Button 1 Link" },
+
         { "type": "text", "id": "button_label_2", "label": "Button 2 Label" },
         { "type": "url", "id": "button_link_2", "label": "Button 2 Link" },
+
         { "type": "text", "id": "button_label_3", "label": "Button 3 Label" },
         { "type": "url", "id": "button_link_3", "label": "Button 3 Link" },
+
         { "type": "text", "id": "heading_font", "label": "Heading Font", "default": "inherit" },
-        { "type": "text", "id": "subheading_font", "label": "Subheading Font", "default": "inherit" }
+        { "type": "text", "id": "subheading_font", "label": "Subheading Font", "default": "inherit" },
+
+        { "type": "range", "id": "padding_top", "label": "Padding Top (px)", "min": 0, "max": 200, "step": 5, "default": 40 },
+        { "type": "range", "id": "padding_bottom", "label": "Padding Bottom (px)", "min": 0, "max": 200, "step": 5, "default": 40 }
       ]
     }
   ],
+
   "presets": [
     { "name": "Custom Advanced Slideshow", "blocks": [ { "type": "slide" }, { "type": "slide" } ] }
   ]
