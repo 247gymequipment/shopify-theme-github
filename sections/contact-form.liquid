@@ -1,0 +1,275 @@
+{{ 'section-contact-form.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Full-page background */
+  body {
+    background: linear-gradient(rgba(0, 0, 0, {{ section.settings.bg_opacity | times: 1 }}), 
+                rgba(0, 0, 0, {{ section.settings.bg_opacity | times: 1 }})), 
+                url('{{ section.settings.bg_image | default: "https://cdn.shopify.com/s/files/1/0756/3201/7681/files/Untitled_design2.png?v=1687238379" }}') 
+                no-repeat center center / cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Contact Content Box */
+  .contact-content {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, {{ section.settings.content_bg_opacity }});
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Add spacing between address and form */
+  .contact-info {
+    margin-bottom: 40px;
+  }
+
+  /* Form Styling */
+  .contact__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .contact__fields .field {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .contact__fields .field label {
+    font-size: 16px;
+    font-weight: bold;
+    color: {{ section.settings.label_color }};
+    margin-bottom: 5px;
+  }
+
+  .contact__fields .field__input, 
+  .contact__fields textarea {
+    background: rgba({{ section.settings.input_bg_color.red }}, 
+                     {{ section.settings.input_bg_color.green }}, 
+                     {{ section.settings.input_bg_color.blue }}, 
+                     {{ section.settings.input_bg_opacity }});
+    color: {{ section.settings.input_text_color }};
+    border: 2px solid {{ section.settings.input_border_color }};
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+    max-width: {{ section.settings.input_width }}px; /* Adjustable width */
+    min-height: {{ section.settings.input_height }}px; /* Adjustable height */
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .contact__fields .field__input:focus, 
+  .contact__fields textarea:focus {
+    border-color: {{ section.settings.input_focus_border }};
+    outline: none;
+    box-shadow: 0px 0px 5px {{ section.settings.input_focus_border }};
+  }
+
+  .contact__fields .field__input::placeholder, 
+  .contact__fields textarea::placeholder {
+    color: {{ section.settings.input_placeholder_color }};
+    font-size: 14px;
+  }
+
+  /* Button Styling */
+  .contact__button {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .contact__button button {
+    padding: 14px 25px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contact__button button:hover {
+    background: {{ section.settings.button_hover_bg }};
+    color: {{ section.settings.button_hover_text }};
+  }
+{%- endstyle -%}
+
+<div class="contact-content">
+  <!-- Contact Info -->
+  <div class="contact-info">
+  
+    <h1>Contact 24/7 Gym Equipment</h1>
+    <p>Need expert advice on gym equipment? Contact us for <strong>product inquiries, bulk orders, or showroom visits</strong>.</p>
+
+    <h2>Contact Information</h2>
+    <p><strong>Email:</strong> <a href="mailto:sales@247gymequipment.com.au">sales@247gymequipment.com.au</a></p>
+    <p><strong>Phone:</strong> <a href="tel:+61412029000">+61 412 029 000</a></p>
+    <p><strong>Address:</strong> <a href="https://maps.google.com/?q=Unit+10,+202+Milperra+Rd,+Milperra+NSW+2214" target="_blank">Unit 10, 202 Milperra Rd, Milperra NSW 2214</a></p>
+  </div>
+
+  <!-- Contact Form -->
+  <div class="contact-form">
+    <h2>{{ section.settings.heading }}</h2>
+
+    {%- form 'contact', id: 'ContactForm', class: 'isolate' -%}
+      <div class="contact__fields">
+        <div class="field">
+          <label for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+          <input class="field__input" type="text" id="ContactForm-name"
+            name="contact[{{ 'templates.contact.form.name' | t }}]" 
+            value="{{ form.name | default: customer.name }}"
+            placeholder="{{ 'templates.contact.form.name' | t }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactForm-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+          <input class="field__input" type="email" id="ContactForm-email"
+            name="contact[email]" value="{{ form.email | default: customer.email }}"
+            placeholder="{{ 'templates.contact.form.email' | t }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactForm-body">{{ 'templates.contact.form.comment' | t }}</label>
+          <textarea id="ContactForm-body" class="text-area field__input"
+            name="contact[message]" placeholder="{{ 'templates.contact.form.comment' | t }}">
+            {{ form.body }}
+          </textarea>
+        </div>
+      </div>
+
+      <div class="contact__button">
+        <button type="submit">Submit</button>
+      </div>
+      {%- style -%}
+  /* Submit Button Styling */
+  .contact__button {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .contact__button button {
+    padding: 14px 25px;
+    background: #60c5bf;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contact__button button:hover {
+    background: #4ab0aa; /* Slightly darker on hover */
+    color: #ffffff;
+  }
+{%- endstyle -%}
+
+    {%- endform -%}
+  </div>
+</div>
+
+{%- style -%}
+  /* Full-page background */
+  body {
+    background: linear-gradient(rgba(0, 0, 0, {{ section.settings.bg_opacity | times: 1 }}), 
+                rgba(0, 0, 0, {{ section.settings.bg_opacity | times: 1 }})), 
+                url('{{ section.settings.bg_image | default: "https://cdn.shopify.com/s/files/1/0756/3201/7681/files/Untitled_design2.png?v=1687238379" }}') 
+                no-repeat center center / cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Blurry Background for Form */
+  .contact-content {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, {{ section.settings.content_bg_opacity }});
+    border-radius: 10px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Form Field Styling */
+  .contact__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center; /* Center fields */
+  }
+
+  .contact__fields .field {
+    width: 100%;
+    max-width: 400px; /* Limit max width */
+    text-align: left;
+  }
+
+  .contact__fields .field__input, 
+  .contact__fields textarea {
+    background: #60c5bf !important; /* Set inside color of input boxes */
+    color: #000000 !important; /* Text color when typing */
+    border: none !important; /* Remove all borders */
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%; /* Responsive width */
+    max-width: 400px; /* Ensures fields are not too wide */
+    min-height: 45px; /* Consistent height */
+    font-size: 16px;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  /* Placeholder Text */
+  .contact__fields .field__input::placeholder, 
+  .contact__fields textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Light white placeholder */
+    font-size: 14px;
+  }
+
+  /* When Input is Focused */
+  .contact__fields .field__input:focus, 
+  .contact__fields textarea:focus {
+    background: #5abeb8; /* Slightly darker shade when active */
+    outline: none;
+  }
+
+  /* Submit Button */
+  .contact__button {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .contact__button button {
+    padding: 14px 25px;
+    background: #60c5bf;
+    color: #ffffff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .contact__button button:hover {
+    background: #4ab0aa;
+    color: #ffffff;
+  }
+{%- endstyle -%}
+

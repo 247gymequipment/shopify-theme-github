@@ -1,0 +1,108 @@
+<style>
+  /* Default styling for desktop */
+  #cart-quote-container {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  #cart-quote-container p {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  #cart-quote-container a {
+    display: inline-block;
+    background-color: #61C5C0;
+    color: white;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  #cart-quote-container hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 15px auto;
+    width: 75%;
+  }
+
+  /* Mobile-specific adjustments */
+  @media screen and (max-width: 768px) {
+    #cart-quote-container {
+      padding: 8px;
+    }
+
+    #cart-quote-container p {
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    #cart-quote-container a {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+
+    #cart-quote-container hr {
+      margin: 12px auto;
+      width: 70%;
+    }
+  }
+</style>
+
+<div id="cart-quote-container">
+  <p style="color: #d9534f; font-weight: bold;">
+    Shipping rates vary by location. Contact us for the best quote.
+  </p>
+
+  {% assign cart_items = "" %}
+  {% assign cart_total_price = 0 %}
+
+  {% for item in cart.items %}
+    {% assign item_price = item.final_line_price | money_without_currency %}
+    {% assign cart_items = cart_items | append: "- " | append: item.product.title | append: " (Qty: " | append: item.quantity | append: ", Price: $" | append: item_price | append: ")%0A" %}
+    {% assign cart_total_price = cart_total_price | plus: item.final_line_price %}
+  {% endfor %}
+
+  {% assign cart_total_price_formatted = cart_total_price | money_without_currency %}
+
+  {% assign whatsapp_message = "Hello, I would like to request a shipping quote for my order.%0A%0AItems in Cart:%0A" | append: cart_items | append: "%0A%0ATotal Price: $" | append: cart_total_price_formatted %}
+  {% assign email_body = "Hello,%0D%0A%0D%0AI would like to request a shipping quote for my order.%0D%0A%0D%0AItems in Cart:%0D%0A" | append: cart_items | append: "%0D%0A%0D%0ATotal Price: $" | append: cart_total_price_formatted %}
+
+
+  
+  {% assign whatsapp_message = "Hello,\n\nI would like to request a shipping quote for my order.\n\nItems in Cart:\n" | append: cart_items | append: "\n\nTotal Price: $" | append: cart_total_price_formatted | append: "\n\nPlease send us your address:" %}
+
+  <p>
+    <a href="https://wa.me/61412029000?text={{ whatsapp_message | replace: ' ', '%20' | replace: '\n', '%0A' }}"
+       target="_blank"
+       style="display: inline-block; background-color: #61C5C0; color: white; padding: 10px 18px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 15px;">
+       📩 Request Shipping Quote on WhatsApp
+    </a>
+  </p>
+
+
+  <hr>
+
+  <p style="color: #333; font-weight: bold;">
+    Prefer to email us instead?
+  </p>
+
+  {% assign email_body = "Hello,\n\nI would like to request a shipping quote for my order.\n\nItems in Cart:\n" | append: cart_items | append: "\n\nTotal Price: $" | append: cart_total_price_formatted | append: "\n\nPlease send us your address:" %}
+
+  <p>
+    <a href="mailto:sales@247gymequipment.com.au?subject=Shipping Quote Request&body={{ email_body | replace: ' ', '%20' | replace: '\n', '%0A' }}"
+       style="display: inline-block; background-color: #61C5C0; color: white; padding: 10px 18px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 15px;">
+       📧 Email Us for a Shipping Quote
+    </a>
+  </p>
+
+</div>
+
+<!-- Extra space below -->
+<div style="height: 25px;"></div>

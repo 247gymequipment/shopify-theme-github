@@ -1,0 +1,158 @@
+{{ 'section-rich-text.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* ✅ Mobile Fix */
+  @media (max-width: 768px) {
+    .section-{{ section.id }}-padding .rich-text__wrapper {
+      width: 100% !important;
+      max-width: 100% !important;
+      display: block !important;
+      text-align: center !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+    .section-{{ section.id }}-padding .custom-html-content {
+      word-break: normal !important;
+      white-space: normal !important;
+      overflow-wrap: break-word !important;
+      font-size: 18px !important;
+      line-height: 1.5em !important;
+      text-align: center !important;
+    }
+  }
+{%- endstyle -%}
+
+<div class="isolate">
+  <div class="rich-text content-container color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+    <div class="rich-text__wrapper rich-text__wrapper--{{ section.settings.desktop_content_position }}"
+         style="padding-left: {{ section.settings.padding_left }}px !important; padding-right: {{ section.settings.padding_right }}px !important;">
+         
+      <div class="rich-text__blocks {{ section.settings.content_alignment }}">
+        {% if section.settings.custom_html != blank %}
+          <div class="custom-html-content">
+            {{ section.settings.custom_html }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom HTML",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "custom_html",
+      "label": "Custom HTML",
+      "default": "<h2>Write any HTML here</h2><p>You can add <strong>tables</strong>, <iframe>, custom code etc.</p>"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Desktop content position"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        { "value": "accent-1", "label": "Accent 1" },
+        { "value": "accent-2", "label": "Accent 2" },
+        { "value": "background-1", "label": "Background 1" },
+        { "value": "background-2", "label": "Background 2" },
+        { "value": "inverse", "label": "Inverse" }
+      ],
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "Full width"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding left",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding right",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom HTML",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

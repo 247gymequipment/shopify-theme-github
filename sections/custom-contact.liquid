@@ -1,0 +1,24 @@
+{% schema %}
+{
+  "name": "Custom HTML Section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "custom_html",
+      "label": "Custom HTML",
+      "default": "<h2>Contact Information</h2><p><strong>Email:</strong> sales@247gymequipment.com.au</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom HTML Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="custom-html-section">
+  {{ section.settings.custom_html }}
+</div>

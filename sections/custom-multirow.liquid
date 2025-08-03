@@ -1,0 +1,225 @@
+{{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* Grid Layout */
+  .multirow-grid {
+    display: grid;
+    gap: 30px;
+  }
+  .multirow-grid.columns-2 { grid-template-columns: repeat(2, 1fr); }
+  .multirow-grid.columns-3 { grid-template-columns: repeat(3, 1fr); }
+  .multirow-grid.columns-4 { grid-template-columns: repeat(4, 1fr); }
+
+  @media(max-width: 750px) {
+    .multirow-grid { grid-template-columns: 1fr !important; }
+  }
+
+  /* Image Position */
+  .multirow-item.image-pos-left,
+  .multirow-item.image-pos-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .multirow-item.image-pos-right { flex-direction: row-reverse; }
+
+.multirow-item.image-pos-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center both image and text */
+}
+
+.multirow-item.image-pos-top .image-with-text__media {
+  margin-bottom: 10px !important; /* Small gap under the image */
+}
+
+.multirow-item.image-pos-top .image-with-text__content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+/* When image is top */
+.multirow-item.image-pos-top {
+  text-align: center;
+}
+
+.multirow-item.image-pos-top .image-with-text__media img {
+  max-height: 150px; /* Smaller image */
+}
+
+.multirow-item.image-pos-top .image-with-text__content * {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+  /* Remove extra space under image */
+  .multirow-item .image-with-text__media {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    line-height: 0 !important;
+  }
+
+  .multirow-item .image-with-text__media img {
+    display: block;
+    margin: 0 !important;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Text Alignment */
+  .multirow-item .text-left { text-align: left; }
+  .multirow-item .text-center { text-align: center; }
+  .multirow-item .text-right { text-align: right; }
+
+  /* Reduce spacing between caption, heading, text, and button */
+  .multirow-item .caption,
+  .multirow-item h2,
+  .multirow-item .text,
+  .multirow-item .button {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  /* Fix spacing ONLY when image position is top */
+.multirow-item.image-pos-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.multirow-item.image-pos-top .image-with-text__media {
+  margin-bottom: 5px !important; /* Reduce gap under image */
+  line-height: 0 !important;     /* Remove white space inside image */
+}
+
+.multirow-item.image-pos-top .image-with-text__content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+</style>
+
+<div class="multirow section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
+  <div class="multirow__inner page-width">
+    <div class="multirow-grid columns-{{ section.settings.columns }}">
+      {%- for block in section.blocks -%}
+        <div class="multirow-item image-pos-{{ block.settings.image_position }}"
+             style="padding-left:{{ block.settings.padding_left }}px; padding-right:{{ block.settings.padding_right }}px;">
+
+          <div class="image-with-text__media no-aspect" 
+               style="max-height:{{ block.settings.image_max_height }}px; overflow:hidden;">
+            {%- if block.settings.image != blank -%}
+             {{ block.settings.image | image_url: width: 1500 | image_tag: loading: 'lazy', style: 'max-height:' | append: block.settings.image_max_height | append: 'px;' }}
+
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+
+          <div class="image-with-text__content text-{{ block.settings.text_align }}">
+            {%- if block.settings.caption != blank -%}
+              <p class="caption" style="font-size:{{ block.settings.text_size }}px;">{{ block.settings.caption }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              <h2 style="font-size:{{ block.settings.heading_size }}px;">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="text" style="font-size:{{ block.settings.text_size }}px;">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.custom_html != blank -%}
+              <div class="custom-html">{{ block.settings.custom_html }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.button_label != blank -%}
+              <a href="{{ block.settings.button_link }}" class="button">{{ block.settings.button_label }}</a>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Multirow",
+  "class": "section",
+  "settings": [
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Bottom", "default": 36 },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Number of Columns",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "image_max_height", "label": "Image Max Height", "min": 50, "max": 400, "step": 10, "unit": "px", "default": 150 },
+
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image Position",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "top"
+        },
+
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+
+        { "type": "range", "id": "heading_size", "label": "Heading Size (px)", "min": 12, "max": 50, "step": 1, "unit": "px", "default": 22 },
+        { "type": "range", "id": "text_size", "label": "Text Size (px)", "min": 12, "max": 30, "step": 1, "unit": "px", "default": 16 },
+
+        { "type": "text", "id": "caption", "label": "Caption", "default": "Caption" },
+        { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Row Title" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Pair text with an image...</p>" },
+        { "type": "text", "id": "button_label", "label": "Button Label", "default": "Learn More" },
+        { "type": "url", "id": "button_link", "label": "Button Link" },
+        { "type": "range", "id": "padding_left", "label": "Padding Left", "min": 0, "max": 100, "step": 5, "unit": "px", "default": 20 },
+        { "type": "range", "id": "padding_right", "label": "Padding Right", "min": 0, "max": 100, "step": 5, "unit": "px", "default": 20 },
+        { "type": "html", "id": "custom_html", "label": "Custom HTML" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Custom Multirow", "blocks": [ { "type": "row" }, { "type": "row" } ] }
+  ]
+}
+{% endschema %}

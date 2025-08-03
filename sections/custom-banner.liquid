@@ -1,0 +1,174 @@
+<div class="custom-banner-wrapper" style="padding: {{ section.settings.padding_top }}px {{ section.settings.padding_right }}px {{ section.settings.padding_bottom }}px {{ section.settings.padding_left }}px;">
+  {% if section.settings.banner_image %}
+    <div class="custom-banner-image" 
+         style="
+           background-image:url({{ section.settings.banner_image | img_url: 'master' }});
+           opacity: {{ section.settings.image_opacity }};
+           {% if section.settings.auto_height %}aspect-ratio: 16 / 9;{% else %}height: {{ section.settings.banner_height_desktop }}px;{% endif %}
+         ">
+    </div>
+  {% endif %}
+  <div class="custom-banner-text" 
+       style="
+         color: {{ section.settings.text_color }};
+         font-size: {{ section.settings.text_size }}px;
+         text-align: {{ section.settings.text_alignment }};
+         padding: {{ section.settings.text_padding }}px;
+       ">
+    {{ section.settings.banner_text }}
+  </div>
+</div>
+
+<style>
+.custom-banner-image {
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 768px) {
+  .custom-banner-image {
+    {% if section.settings.auto_height %}
+      aspect-ratio: 4 / 5;
+    {% else %}
+      height: {{ section.settings.banner_height_mobile }}px;
+    {% endif %}
+    background-position: center top;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "🔥 My Custom Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_height",
+      "label": "Auto Adjust Height (Responsive)",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "banner_height_desktop",
+      "label": "Banner Height (Desktop px)",
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "banner_height_mobile",
+      "label": "Banner Height (Mobile px)",
+      "min": 150,
+      "max": 800,
+      "step": 10,
+      "default": 300
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Overlay Text",
+      "default": "Your Banner Text"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text Size (px)",
+      "min": 12,
+      "max": 80,
+      "step": 2,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "text_padding",
+      "label": "Text Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity",
+      "label": "Image Transparency",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Banner",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding Left (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding Right (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "🔥 My Custom Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
