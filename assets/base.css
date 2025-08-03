@@ -3955,10 +3955,39 @@ details-disclosure > details {
     margin-top: 5px !important;
   }
 }
-
   /* 🔹 Adjust spacing for dots */
   .slideshow__controls {
     margin-top: 5px !important;
+  }
+}
+@media screen and (max-width: 768px) {
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .slideshow,
+  .slideshow__media,
+  .slideshow__slide,
+  .banner,
+  .slider {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .slideshow__media img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+
+  /* Optional: limit image height */
+  .slideshow__media {
+    max-height: 95vh;
   }
 }
 
