@@ -134,7 +134,7 @@
       "name": "Custom Advanced Slideshow",
       "settings": {
         "layout": "full",
-        "slide_height": "50vh",
+        "slide_height": "adapt",
         "pagination_style": "dots",
         "auto_rotate": true,
         "change_slides_speed": 4,
