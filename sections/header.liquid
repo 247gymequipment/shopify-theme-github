@@ -13,8 +13,18 @@
   word-wrap: break-word;
 }
 
-.hide-mobile {
-  display: inline;
+.links-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* space between items */
+  flex-wrap: wrap; /* allows wrapping on small screens */
+  margin-top: 5px;
+}
+
+.links-row a {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 @media only screen and (max-width: 600px) {
@@ -23,13 +33,13 @@
     padding: 5px;
   }
 
-  .announcement-text a {
-    display: block;
-    margin-top: 6px;
+  .hide-mobile {
+    display: none;
   }
 
-  .hide-mobile {
-    display: none; /* Hide on mobile only */
+  .links-row {
+    flex-direction: row; /* still side by side */
+    gap: 10px;
   }
 }
 </style>
@@ -38,13 +48,11 @@
   <div class="announcement-text">
     🚚 Fast Delivery Across Australia • 💪 Premium Gym Equipment for Home & Commercial Use 
     <span class="hide-mobile">• ⭐ Trusted by Thousands of Aussie Lifters</span>
-    <a href="https://maps.app.goo.gl/iUGVXvs8zGtTfEePA" target="_blank" style="color: white; margin-left: 15px;">
-      📍 Find Us on Google Maps
-    </a>
-    <br>
-    <a href="tel:0412 029 000" style="color: #ffffff; font-weight: bold; display: inline-block; margin-top: 5px;">
-      📞 Call Us: 0412 029 000
-    </a>
+
+    <div class="links-row">
+      <a href="https://maps.app.goo.gl/iUGVXvs8zGtTfEePA" target="_blank">📍 Find Us on Google Maps</a>
+      <a href="tel:0412 029 000">📞 Call Us: 0412 029 000</a>
+    </div>
   </div>
 </div>
 
