@@ -3595,30 +3595,114 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
-/* ✅ Change header menu font size */
+
+/* Header menu font size */
 .header__menu-item {
-  font-size: 18px !important;  /* Adjust size */
-  font-weight: 600;           /* Optional: make it bolder */
+  font-size: 18px !important;
+  font-weight: 600;
 }
 
-/* Optional: Change only desktop size */
 @media screen and (max-width: 768px) {
   .header__menu-item {
-    font-size: 16px !important; /* Mobile font size */
+    font-size: 16px !important;
   }
 }
-/* ✅ Align header menu to the LEFT */
-.header__inline-menu {
+
+/* Header menu alignment utility classes */
+.header__inline-menu--left {
   justify-content: flex-start !important;
+  text-align: left !important;
 }
-
-/* ✅ Align header menu to the CENTER */
-.header__inline-menu {
+.header__inline-menu--center {
   justify-content: center !important;
+  text-align: center !important;
+}
+.header__inline-menu--right {
+  justify-content: flex-end !important;
+  text-align: right !important;
 }
 
-/* ✅ Align header menu to the RIGHT */
-.header__inline-menu {
-  justify-content: flex-end !important;
+/* Header logo alignment utility classes */
+.header__heading-wrapper--top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+.header__heading-wrapper--left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.header__heading-wrapper--right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Responsive adjustments for mobile/desktop */
+@media screen and (max-width: 749px) {
+  .header__heading-wrapper--mobile-top {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .header__heading-wrapper--mobile-left {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+  .header__heading-wrapper--mobile-right {
+    flex-direction: row-reverse !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+  .header__inline-menu--mobile-center {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .header__inline-menu--mobile-left {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  .header__inline-menu--mobile-right {
+    justify-content: flex-end !important;
+    text-align: right !important;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .header__heading-wrapper--desktop-top {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .header__heading-wrapper--desktop-left {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+  .header__heading-wrapper--desktop-right {
+    flex-direction: row-reverse !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+  .header__inline-menu--desktop-center {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .header__inline-menu--desktop-left {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  .header__inline-menu--desktop-right {
+    justify-content: flex-end !important;
+    text-align: right !important;
+  }
+}
+
+/* Usage:
+   - Add the relevant utility class to your header or menu container for alignment.
+   - Example: <div class="header__heading-wrapper header__heading-wrapper--desktop-top header__heading-wrapper--mobile-left">
+   - Example: <nav class="header__inline-menu header__inline-menu--desktop-center header__inline-menu--mobile-left">
+*/
 
