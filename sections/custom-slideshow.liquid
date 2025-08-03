@@ -1,18 +1,14 @@
 {% comment %}
 Custom Advanced Slideshow Section
 Includes:
-- Slide-specific animation
-- Multiple buttons per slide
-- Background video support
-- Custom fonts
-- Per-slide duration
-- Overlay color + opacity
-- Keyboard navigation
+✅ Desktop + Mobile Images
+✅ Slideshow-level controls (layout, height, pagination, autoplay, speed)
+✅ Per-slide animation, multiple buttons, overlay, video
 {% endcomment %}
 
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
-<section class="custom-slideshow" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight">
+<section class="custom-slideshow {% if section.settings.layout == 'grid' %}page-width{% endif %}" tabindex="0" aria-keyshortcuts="ArrowLeft ArrowRight">
   <div class="custom-slider" id="CustomSlider-{{ section.id }}">
     {% for block in section.blocks %}
       {% assign slide_id = 'slide-' | append: section.id | append: '-' | append: forloop.index %}
@@ -20,13 +16,18 @@ Includes:
         class="custom-slide animate--{{ block.settings.slide_animation }}"
         id="{{ slide_id }}"
         data-duration="{{ block.settings.slide_duration | default: 5 }}">
-
+        
         {% if block.settings.video_url != blank %}
           <video autoplay loop muted playsinline class="slide-media">
             <source src="{{ block.settings.video_url }}" type="video/mp4">
           </video>
-        {% elsif block.settings.image %}
-          <div class="slide-media" style="background-image: url({{ block.settings.image | image_url: width: 2000 }});"></div>
+        {% else %}
+          <picture>
+            {% if block.settings.mobile_image != blank %}
+              <source srcset="{{ block.settings.mobile_image | image_url: width: 1200 }}" media="(max-width: 749px)">
+            {% endif %}
+            <img src="{{ block.settings.desktop_image | image_url: width: 2000 }}" class="slide-media" alt="">
+          </picture>
         {% endif %}
 
         <div class="overlay" style="background-color: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
@@ -42,14 +43,15 @@ Includes:
 
           <div class="slide-buttons">
             {% for i in (1..3) %}
-              {% assign label_key = 'button_label_' | append: i %}
-              {% assign link_key = 'button_link_' | append: i %}
-              {% assign label = block.settings[label_key] %}
-              {% assign link = block.settings[link_key] %}
-              {% if label != blank %}
-                <a href="{{ link }}" class="btn">{{ label }}</a>
-              {% endif %}
-            {% endfor %}
+  {% assign label_key = 'button_label_' | append: i %}
+  {% assign link_key = 'button_link_' | append: i %}
+  {% assign label = block.settings[label_key] %}
+  {% assign link = block.settings[link_key] %}
+
+  {% if label != blank %}
+    <a href="{{ link }}" class="btn">{{ label }}</a>
+  {% endif %}
+{% endfor %}
           </div>
         </div>
       </div>
@@ -60,14 +62,16 @@ Includes:
 <script>
 (function() {
   const slider = document.getElementById('CustomSlider-{{ section.id }}');
-  let slides = slider.querySelectorAll('.custom-slide');
+  const slides = slider.querySelectorAll('.custom-slide');
   let current = 0;
 
   function showSlide(index) {
     slides.forEach((s, i) => s.style.display = i === index ? 'block' : 'none');
     const duration = parseInt(slides[index].dataset.duration) * 1000 || 5000;
     clearTimeout(window._slideTimer);
-    window._slideTimer = setTimeout(() => nextSlide(), duration);
+    if ({{ section.settings.auto_rotate | json }}) {
+      window._slideTimer = setTimeout(() => nextSlide(), duration);
+    }
   }
 
   function nextSlide() {
@@ -90,48 +94,12 @@ Includes:
 </script>
 
 <style>
-.custom-slideshow {
-  position: relative;
-  overflow: hidden;
-}
-.custom-slide {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display: none;
-  transition: opacity 1s ease;
-}
-.slide-media {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-}
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 2;
-}
-.slide-content {
-  position: relative;
-  z-index: 3;
-  padding: 40px;
-  color: white;
-}
-.slide-buttons .btn {
-  margin-right: 10px;
-  background: #000;
-  color: #fff;
-  padding: 10px 20px;
-  text-decoration: none;
-  display: inline-block;
-  border-radius: 4px;
-}
+.custom-slideshow { position: relative; overflow: hidden; }
+.custom-slide { position: relative; width: 100%; height: 100vh; display: none; }
+.slide-media { width: 100%; height: 100%; object-fit: cover; }
+.overlay { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2; }
+.slide-content { position: relative; z-index: 3; padding: 40px; color: white; }
+.slide-buttons .btn { margin-right: 10px; background: #000; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 4px; }
 .animate--fade { animation: fadeIn 1s ease; }
 .animate--slide-in { animation: slideIn 1s ease; }
 .animate--zoom { animation: zoomIn 1s ease; }
@@ -143,27 +111,45 @@ Includes:
 {% schema %}
 {
   "name": "Custom Advanced Slideshow",
-  "settings": [],
+  "settings": [
+    { "type": "select", "id": "layout", "label": "Layout", "options": [
+      { "value": "full", "label": "Full width" },
+      { "value": "grid", "label": "Grid" }
+    ], "default": "full" },
+    { "type": "select", "id": "slide_height", "label": "Slide Height", "options": [
+      { "value": "adapt", "label": "Adapt to first image" },
+      { "value": "small", "label": "Small" },
+      { "value": "medium", "label": "Medium" },
+      { "value": "large", "label": "Large" }
+    ], "default": "medium" },
+    { "type": "select", "id": "pagination_style", "label": "Pagination Style", "options": [
+      { "value": "dots", "label": "Dots" },
+      { "value": "numbers", "label": "Numbers" },
+      { "value": "counter", "label": "Counter" }
+    ], "default": "dots" },
+    { "type": "checkbox", "id": "auto_rotate", "label": "Auto-rotate slides", "default": true },
+    { "type": "range", "id": "change_slides_speed", "label": "Change slides every", "min": 3, "max": 10, "step": 1, "default": 5 },
+    { "type": "select", "id": "image_behavior", "label": "Image behavior", "options": [
+      { "value": "none", "label": "None" },
+      { "value": "ambient", "label": "Ambient" }
+    ], "default": "none" },
+    { "type": "text", "id": "accessibility_info", "label": "Slideshow description", "default": "Slideshow about our brand" }
+  ],
   "blocks": [
     {
       "type": "slide",
       "name": "Slide",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Slide Image" },
+        { "type": "image_picker", "id": "desktop_image", "label": "Desktop Image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile Image" },
         { "type": "url", "id": "video_url", "label": "Background Video URL" },
         { "type": "text", "id": "heading", "label": "Heading" },
         { "type": "text", "id": "subheading", "label": "Subheading" },
-        {
-          "type": "select",
-          "id": "slide_animation",
-          "label": "Slide Animation",
-          "options": [
-            { "value": "fade", "label": "Fade" },
-            { "value": "slide-in", "label": "Slide In" },
-            { "value": "zoom", "label": "Zoom" }
-          ],
-          "default": "fade"
-        },
+        { "type": "select", "id": "slide_animation", "label": "Slide Animation", "options": [
+          { "value": "fade", "label": "Fade" },
+          { "value": "slide-in", "label": "Slide In" },
+          { "value": "zoom", "label": "Zoom" }
+        ], "default": "fade" },
         { "type": "range", "id": "slide_duration", "label": "Slide Duration (seconds)", "min": 3, "max": 10, "step": 1, "default": 5 },
         { "type": "color", "id": "overlay_color", "label": "Overlay Color", "default": "#000000" },
         { "type": "range", "id": "overlay_opacity", "label": "Overlay Opacity (%)", "min": 0, "max": 100, "step": 10, "default": 50 },
