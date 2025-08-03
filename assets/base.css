@@ -4059,14 +4059,17 @@ details-disclosure > details {
     object-fit: cover !important;
     max-height: 100vh !important;
   }
-  @media screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .videoBackground .fullscreen-video-wrap .video-js,
   .videoBackground .fullscreen-video-wrap video {
     width: 100% !important;
     height: 100vh !important;
-    object-fit: contain !important;  /* Show full video without zoom */
-    background-color: #000;          /* Add black bars if aspect ratio differs */
+    object-fit: cover !important;
+    object-position: top center !important; /* Adjust which part of video stays visible */
   }
+}
+
+  
 }
 
 }
