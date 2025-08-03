@@ -4052,7 +4052,14 @@ details-disclosure > details {
     object-fit: cover !important;
   }
 }
-
+@media screen and (max-width: 767px) {
+  .videoBackground .fullscreen-video-wrap video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    max-height: 100vh !important;
+  }
+}
 }
 
 
