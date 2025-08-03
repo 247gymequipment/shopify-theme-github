@@ -3912,8 +3912,21 @@ details-disclosure > details {
     object-fit: cover !important;
     min-height: 250px !important; /* Adjust this value */
   }
-  .slideshow__media::before {
-  padding-bottom: var(--ratio-percent);
+/* Remove extra pseudo-element padding */
+.slideshow__media::before {
+  content: none !important;
+  padding-bottom: 0 !important;
+}
+.slideshow__media img {
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.slideshow,
+.slideshow__media,
+.slideshow__slide {
+  height: 400px !important; /* adjust value */
+  max-height: 80vh !important;
 }
 }
 
