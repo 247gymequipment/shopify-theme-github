@@ -54,14 +54,12 @@
               <source 
                 srcset="{{ card_collection.featured_image | image_url: width: 750 }}" 
                 media="(min-width: 750px)" 
-              >
-              <source 
-                srcset="{{ card_collection.featured_image | image_url: width: 330 }}" 
-                media="(max-width: 749px)" 
+                class="desktop-img"
               >
               <img
                 src="{{ card_collection.featured_image | image_url: width: 330 }}"
-                alt="{{ card_collection.title | escape }}"
+                alt="{{ card_collection.featured_image.alt | escape }}"
+                class="mobile-img"
                 loading="lazy"
               >
             </picture>
