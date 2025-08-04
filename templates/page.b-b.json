@@ -1,1 +1,102 @@
-{"sections":{"20f79e38-7356-4260-be5c-3e8330acea3c":{"type":"collection-list","blocks":{"template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-0":{"type":"featured_collection","settings":{"collection":"benches"}},"template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-1":{"type":"featured_collection","settings":{"collection":"barbells"}},"template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-2":{"type":"featured_collection","settings":{"collection":"barbell-accessories"}}},"block_order":["template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-0","template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-1","template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-2"],"settings":{"title":"","heading_size":"h1","image_ratio":"square","columns_desktop":3,"color_scheme":"background-1","show_view_all":false,"columns_mobile":"2","swipe_on_mobile":false,"padding_top":0,"padding_bottom":16}},"main":{"type":"main-page","disabled":true,"settings":{"padding_top":28,"padding_bottom":28}},"custom_liquid_egcFbY":{"type":"custom-liquid","name":"t:sections.custom-liquid.presets.name","settings":{"custom_liquid":"<div class=\"elfsight-sapp-6ea3e2b1-398d-4e46-af87-891480dd3b0b\"><\/div>","color_scheme":"background-1","padding_top":0,"padding_bottom":0}},"new_custom_page_section_mXb9qc":{"type":"New-custom-page-section","name":"Advanced Page","settings":{"heading":"Bench & Barbells","heading_color":"#000000","heading_size":28,"text":"<h1><br\/><br\/>Strength Training Benches & Barbells – Shop Now<\/h1><p>Upgrade your home gym with our <strong>durable weight benches<\/strong> and <strong>Olympic barbells<\/strong>. Designed for strength training, our equipment provides <strong>stability<\/strong> and <strong>performance<\/strong> for all fitness levels.<br\/><br\/><\/p><h2>Weight Benches<\/h2><p>Choose from <strong>adjustable<\/strong>, <strong>flat<\/strong>, or <strong>incline-decline benches<\/strong> built with heavy-duty steel and ergonomic padding for <strong>comfort and stability<\/strong>.<br\/><br\/><\/p><h2>Olympic Barbells<\/h2><p>Explore our range of <strong>Olympic-standard barbells<\/strong>, including <strong>power bars<\/strong>, <strong>hybrid bars<\/strong>, and <strong>curl bars<\/strong>, ideal for weightlifting, powerlifting, and full-body workouts.<br\/><br\/><\/p><p><strong>Fast Delivery Australia-Wide – <\/strong><a href=\"https:\/\/247gymequipment.com.au\/pages\/bench-barbells\"><strong>Shop Now!<\/strong><\/a><\/p>","text_color":"#333333","text_size":16,"custom_html":"","page":"","background_color":"#ffffff","bg_opacity":0,"bg_parallax":false,"bg_position":"center","bg_size":"cover","bg_repeat":"no-repeat","max_content_width":1000,"padding_left":20,"padding_right":20,"padding_top":40,"padding_bottom":40}}},"order":["20f79e38-7356-4260-be5c-3e8330acea3c","main","custom_liquid_egcFbY","new_custom_page_section_mXb9qc"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "20f79e38-7356-4260-be5c-3e8330acea3c": {
+      "type": "collection-list",
+      "blocks": {
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-0": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "benches"
+          }
+        },
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "barbells"
+          }
+        },
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-2": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "barbell-accessories"
+          }
+        }
+      },
+      "block_order": [
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-0",
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-1",
+        "template--19387273773329__20f79e38-7356-4260-be5c-3e8330acea3c-168670430107cc9bfa-2"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "background-1",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 100
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "custom_liquid_egcFbY": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"elfsight-sapp-6ea3e2b1-398d-4e46-af87-891480dd3b0b\"></div>",
+        "color_scheme": "background-1",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "new_custom_page_section_mXb9qc": {
+      "type": "New-custom-page-section",
+      "name": "Advanced Page",
+      "settings": {
+        "heading": "Bench & Barbells",
+        "heading_color": "#000000",
+        "heading_size": 28,
+        "text": "<h1><br/><br/>Strength Training Benches & Barbells – Shop Now</h1><p>Upgrade your home gym with our <strong>durable weight benches</strong> and <strong>Olympic barbells</strong>. Designed for strength training, our equipment provides <strong>stability</strong> and <strong>performance</strong> for all fitness levels.<br/><br/></p><h2>Weight Benches</h2><p>Choose from <strong>adjustable</strong>, <strong>flat</strong>, or <strong>incline-decline benches</strong> built with heavy-duty steel and ergonomic padding for <strong>comfort and stability</strong>.<br/><br/></p><h2>Olympic Barbells</h2><p>Explore our range of <strong>Olympic-standard barbells</strong>, including <strong>power bars</strong>, <strong>hybrid bars</strong>, and <strong>curl bars</strong>, ideal for weightlifting, powerlifting, and full-body workouts.<br/><br/></p><p><strong>Fast Delivery Australia-Wide – </strong><a href=\"https://247gymequipment.com.au/pages/bench-barbells\"><strong>Shop Now!</strong></a></p>",
+        "text_color": "#333333",
+        "text_size": 16,
+        "custom_html": "",
+        "page": "",
+        "background_color": "#ffffff",
+        "bg_opacity": 0,
+        "bg_parallax": false,
+        "bg_position": "center",
+        "bg_size": "cover",
+        "bg_repeat": "no-repeat",
+        "max_content_width": 1000,
+        "padding_left": 20,
+        "padding_right": 20,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    }
+  },
+  "order": [
+    "20f79e38-7356-4260-be5c-3e8330acea3c",
+    "main",
+    "custom_liquid_egcFbY",
+    "new_custom_page_section_mXb9qc"
+  ]
+}
