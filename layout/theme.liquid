@@ -266,8 +266,6 @@
       {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
-    {{ 'quantity-input.css' | asset_url | stylesheet_tag }}
-
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -367,8 +365,6 @@
       };
     </script>
 
-    {{ 'quantity-input.js' | asset_url | script_tag }}
-
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -376,5 +372,15 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".quantity__input").forEach(input => {
+      input.removeAttribute("readonly");
+      input.disabled = false;
+      input.addEventListener("keydown", e => e.stopPropagation());
+    });
+  });
+</script>
   </body>
 </html>

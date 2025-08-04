@@ -4059,7 +4059,123 @@ details-disclosure > details {
     object-fit: cover !important;
     max-height: 100vh !important;
   }
+/* Change background of product cards */
+.card {
+  background-color: #ffffff !important; /* Change to white or any colour */
 }
+
+/* Change background of product info area */
+.card__content,
+.card__information {
+  background-color:rgb(255, 255, 255) !important; /* Set to desired colour */
+}
+
+/* Optional: Change only for collection grid */
+.product-grid .card {
+  background-color: #ffffff !important;
+}
+.card:hover {
+  background-color: #f9f9f9 !important; /* Light grey on hover */
+}
+
+/* ✅ Final consistent quantity styling */
+.product-form__quantity quantity-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.product-form__quantity quantity-input .quantity__button {
+  width: 38px;
+  height: 38px;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 4px;
+}
+
+.product-form__quantity quantity-input .quantity__input {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+  width: 60px;
+  height: 38px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 4px;
+  background: transparent; /* ✅ so it blends in */
+}
+
+/* ✅ Add focus state so it's clickable */
+.product-form__quantity quantity-input .quantity__input:focus {
+  outline: 2px solid #3dbac2; /* or any highlight colour */
+}
+
+/* Remove default spinners */
+.product-form__quantity quantity-input .quantity__input::-webkit-inner-spin-button,
+.product-form__quantity quantity-input .quantity__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ✅ Mobile adjustments */
+@media (max-width: 600px) {
+  .product-form__quantity quantity-input .quantity__button {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+  .product-form__quantity quantity-input .quantity__input {
+    width: 50px;
+    height: 34px;
+    font-size: 15px;
+  }
+  /* Change product title font size on collection/product cards */
+.card__heading {
+  font-size: 10px !important;  /* Change this value */
+  font-weight: 600;            /* Optional */
+}
+
+/* Optional: Make it responsive */
+@media (max-width: 768px) {
+  .card__heading {
+    font-size: 16px !important; /* Smaller size for mobile */
+  }
+  .card__heading .full-unstyled-link {
+  font-size: 20px !important;
+}
+/* Remove border around the quantity input wrapper */
+#Quantity-Form-{{ section.id }},
+.product-form__quantity {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Remove border from the number input itself */
+#Quantity-Form-{{ section.id }} .quantity__input,
+.product-form__quantity .quantity__input {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+#Quantity-Form-{{ section.id }} .quantity__input {
+  border-radius: 8px !important;
+  padding: 8px 10px !important;
+}
+.product-form__quantity quantity-input .quantity__input {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+}
+
+
+
 
 
 
