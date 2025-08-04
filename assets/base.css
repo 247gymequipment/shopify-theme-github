@@ -4174,6 +4174,29 @@ details-disclosure > details {
 }
 }
 
+@media (max-width: 768px) {
+  /* Ensure product and collection images are visible */
+  .slider,
+  .collection-list__item,
+  .media--transparent {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure images inside these containers are properly displayed */
+  .slider img,
+  .collection-list__item img,
+  .media--transparent img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+}
+
+
+
+
 
 
 
@@ -4184,4 +4207,3 @@ details-disclosure > details {
    - Example: <div class="header__heading-wrapper header__heading-wrapper--desktop-top header__heading-wrapper--mobile-left">
    - Example: <nav class="header__inline-menu header__inline-menu--desktop-center header__inline-menu--mobile-left">
 */
-
