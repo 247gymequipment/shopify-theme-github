@@ -4123,31 +4123,9 @@ details-disclosure > details {
 }
 
 /* ✅ Mobile adjustments */
-@media (max-width: 600px) {
-  .product-form__quantity quantity-input .quantity__button {
-    width: 34px;
-    height: 34px;
-    font-size: 18px;
-  }
-  .product-form__quantity quantity-input .quantity__input {
-    width: 50px;
-    height: 34px;
-    font-size: 15px;
-  }
-  /* Change product title font size on collection/product cards */
-.card__heading {
-  font-size: 10px !important;  /* Change this value */
-  font-weight: 600;            /* Optional */
-}
 
-/* Optional: Make it responsive */
-@media (max-width: 768px) {
-  .card__heading {
-    font-size: 16px !important; /* Smaller size for mobile */
-  }
-  .card__heading .full-unstyled-link {
-  font-size: 20px !important;
-}
+
+
 /* Remove border around the quantity input wrapper */
 #Quantity-Form-{{ section.id }},
 .product-form__quantity {
