@@ -4122,10 +4122,7 @@ details-disclosure > details {
   margin: 0;
 }
 
-/* ✅ Mobile adjustments */
-
-
-
+/* Global Styles */
 .product-form__quantity {
   border: none !important;
   box-shadow: none !important;
@@ -4140,54 +4137,6 @@ details-disclosure > details {
   padding: 8px 10px !important;
 }
 
-.product-form__quantity quantity-input .quantity__input {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-}
-
-
-@media (max-width: 768px) {
-  /* Ensure product and collection images are visible */
-  .slider,
-  .collection-list__item,
-  .media--transparent {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  /* Ensure images inside these containers are properly displayed */
-  .slider img,
-  .collection-list__item img,
-  .media--transparent img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: cover !important;
-  }
-}
-
-@media (max-width: 768px) {
-    .card__media, 
-    .media, 
-    .collection-grid__image {
-        display: block !important;
-        visibility: visible !important;
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
-    }
-
-    img {
-        object-fit: cover !important;
-        max-width: 100% !important;
-        height: auto !important;
-    }
-
-    .small-hide, 
-    .medium-hide {
-        display: block !important;
-    }
 .card__inner {
   max-width: 100%;
   overflow: hidden;
@@ -4204,7 +4153,44 @@ details-disclosure > details {
 .media--square {
   aspect-ratio: 1 / 1;
 }
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .slider,
+  .collection-list__item,
+  .media--transparent,
+  .card__media,
+  .media,
+  .collection-grid__image {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .slider img,
+  .collection-list__item img,
+  .media--transparent img,
+  .card__media img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+  }
+
+  img {
+    object-fit: cover !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .small-hide,
+  .medium-hide {
+    display: block !important;
+  }
 }
+
 
 /* Usage:
    - Add the relevant utility class to your header or menu container for alignment.
