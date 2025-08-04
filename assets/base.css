@@ -4216,6 +4216,23 @@ details-disclosure > details {
         display: block !important;
     }
 }
+.card__inner {
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.media--square {
+  aspect-ratio: 1 / 1;
+}
+}
 
 /* Usage:
    - Add the relevant utility class to your header or menu container for alignment.
