@@ -27,6 +27,11 @@
     visibility: visible !important;
     display: block !important;
   }
+
+  img {
+    display: block !important; /* Ensure images are visible */
+    visibility: visible !important;
+  }
 }
 
 /* Optional: Disable slider on mobile */
