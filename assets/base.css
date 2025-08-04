@@ -4215,7 +4215,6 @@ details-disclosure > details {
     .medium-hide {
         display: block !important;
     }
-}
 .card__inner {
   max-width: 100%;
   overflow: hidden;
