@@ -22,6 +22,11 @@
     visibility: visible !important;
     opacity: 1 !important;
   }
+
+  .collection-slider img {
+    visibility: visible !important;
+    display: block !important;
+  }
 }
 
 /* Optional: Disable slider on mobile */

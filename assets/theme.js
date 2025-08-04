@@ -8,6 +8,11 @@ if (window.innerWidth <= 768) {
       initializeSlider(slider); // Replace with your slider initialization logic
       slider.classList.add('initialized');
     }
+    // Ensure images inside the slider are visible
+    const images = slider.querySelectorAll('img');
+    images.forEach(image => {
+      image.style.visibility = 'visible';
+    });
   });
 }
 // ...existing code...
