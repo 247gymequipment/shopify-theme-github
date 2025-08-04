@@ -1,47 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
   const quantityInputs = document.querySelectorAll('.quantity-input');
 
-  quantityInputs.forEach(inputWrapper => {
-    const input = inputWrapper.querySelector('input');
-    const incrementButton = document.createElement('button');
-    const decrementButton = document.createElement('button');
+  quantityInputs.forEach((inputWrapper) => {
+    const input = inputWrapper.querySelector('input[type="number"]');
+    const minusButton = inputWrapper.querySelector('.quantity-minus');
+    const plusButton = inputWrapper.querySelector('.quantity-plus');
 
-    // Add buttons
-    incrementButton.textContent = '+';
-    decrementButton.textContent = '-';
-    incrementButton.classList.add('quantity-increment');
-    decrementButton.classList.add('quantity-decrement');
-    inputWrapper.appendChild(decrementButton);
-    inputWrapper.appendChild(incrementButton);
-
-    // Set default min/max if not provided
     const min = parseInt(input.getAttribute('min')) || 1;
     const max = parseInt(input.getAttribute('max')) || Infinity;
+    const step = parseInt(input.getAttribute('step')) || 1;
 
-    // Update value and trigger callback
-    const updateValue = (newValue) => {
-      const clampedValue = Math.min(Math.max(newValue, min), max);
-      input.value = clampedValue;
-      input.dispatchEvent(new Event('change')); // Trigger change event
+    const updateButtonsState = () => {
+      minusButton.disabled = input.value <= min;
+      plusButton.disabled = input.value >= max;
     };
 
-    // Button click handlers
-    incrementButton.addEventListener('click', () => {
-      updateValue(parseInt(input.value || 0) + 1);
+    minusButton.addEventListener('click', () => {
+      const newValue = Math.max(min, parseInt(input.value) - step);
+      input.value = newValue;
+      input.dispatchEvent(new Event('change'));
+      updateButtonsState();
     });
 
-    decrementButton.addEventListener('click', () => {
-      updateValue(parseInt(input.value || 0) - 1);
+    plusButton.addEventListener('click', () => {
+      const newValue = Math.min(max, parseInt(input.value) + step);
+      input.value = newValue;
+      input.dispatchEvent(new Event('change'));
+      updateButtonsState();
     });
 
-    // Input validation
     input.addEventListener('input', () => {
-      const value = parseInt(input.value);
-      if (isNaN(value)) {
-        input.value = min; // Reset to min if invalid
-      } else {
-        updateValue(value);
-      }
+      let value = parseInt(input.value);
+      if (isNaN(value)) value = min;
+      value = Math.max(min, Math.min(max, value));
+      input.value = value;
+      updateButtonsState();
     });
+
+    input.addEventListener('change', () => {
+      let value = parseInt(input.value);
+      if (isNaN(value)) value = min;
+      value = Math.max(min, Math.min(max, value));
+      input.value = value;
+      updateButtonsState();
+    });
+
+    // Initialize button states
+    updateButtonsState();
   });
 });
