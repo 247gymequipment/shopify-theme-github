@@ -1,0 +1,23 @@
+.quantity-input {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-input input {
+  text-align: center;
+  width: 50px;
+  margin: 0 5px;
+}
+
+.quantity-increment,
+.quantity-decrement {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.quantity-increment:hover,
+.quantity-decrement:hover {
+  background-color: #e0e0e0;
+}
