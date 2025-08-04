@@ -43,42 +43,36 @@
     "
     style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
   >
-    <div
-      class="card__inner {% if card_style == 'standard' %}color-{{ card_color_scheme }} gradient{% endif %}{% if card_collection.featured_image or card_style == 'standard' %} ratio{% endif %}"
-      style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
-    >
-      {%- if card_collection.featured_image -%}
-        <div class="card__media">
-          <div class="media media--transparent media--hover-effect">
-            <picture>
-              <source 
-                    srcset="{{ card_collection.featured_image | image_url: width: 750 }}"
-    media="(min-width: 750px)"
-    class="desktop-img"
-  >
-  <source
-    srcset="{{ card_collection.featured_image | image_url: width: 330 }}"
-    media="(max-width: 749px)"
-    class="mobile-img"
-  >
-  <img
-    src="{{ card_collection.featured_image | image_url: width: 330 }}"
-    alt="{{ card_collection.title | escape }}"
-    loading="lazy"
-    class="mobile-img"
-  >
-</picture>
-
-          </div>
-        </div>
-      {%- else -%}
-        <div class="card__media">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Placeholder">
-            <rect width="100" height="100" fill="#e0e0e0" />
-            <text x="50" y="55" font-size="12" text-anchor="middle" fill="#888">No Image</text>
-          </svg>
-        </div>
-      {%- endif -%}
+<div
+  class="card__inner {% if card_style == 'standard' %}color-{{ card_color_scheme }} gradient{% endif %}{% if card_collection.featured_image or card_style == 'standard' %} ratio{% endif %}"
+  style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+>
+  <div class="card__media">
+    {%- if card_collection.featured_image -%}
+      <div class="media media--transparent media--hover-effect">
+        <picture>
+          <source 
+            srcset="{{ card_collection.featured_image | image_url: width: 750 }}"
+            media="(min-width: 750px)">
+          <source
+            srcset="{{ card_collection.featured_image | image_url: width: 330 }}"
+            media="(max-width: 749px)">
+          <img
+            src="{{ card_collection.featured_image | image_url: width: 330 }}"
+            alt="{{ card_collection.title | escape }}"
+            loading="lazy"
+            class="media__image"
+          >
+        </picture>
+      </div>
+    {%- else -%}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" role="img" aria-label="Placeholder">
+        <rect width="100" height="100" fill="#e0e0e0" />
+        <text x="50" y="55" font-size="12" text-anchor="middle" fill="#888">No Image</text>
+      </svg>
+    {%- endif -%}
+  </div>
+</div>
       {%- if card_collection == blank -%}
         <div class="card__media">
           {%- if placeholder_image -%}
