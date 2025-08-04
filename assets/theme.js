@@ -15,4 +15,12 @@ if (window.innerWidth <= 768) {
     });
   });
 }
+
+// Ensure no code conditionally hides images on mobile
+document.querySelectorAll('.card__media, .media, .collection-grid__image').forEach((el) => {
+    el.style.display = 'block';
+    el.style.visibility = 'visible';
+    el.style.height = 'auto';
+});
+
 // ...existing code...

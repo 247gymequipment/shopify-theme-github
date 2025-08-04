@@ -4194,6 +4194,26 @@ details-disclosure > details {
   }
 }
 
+@media (max-width: 768px) {
+    .card__media, .media, .collection-grid__image {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    img {
+        object-fit: cover !important;
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    .small-hide, .medium-hide {
+        display: block !important;
+    }
+}
+
 
 
 
