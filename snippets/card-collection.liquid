@@ -167,3 +167,19 @@
     {%- endif -%}
   </div>
 </div>
+
+<div class="card-collection">
+  {% if collection.image %}
+    <img 
+      src="{{ collection.image | img_url: 'medium' }}" 
+      alt="{{ collection.title }}" 
+      class="collection-image"
+    >
+  {% else %}
+    <img 
+      src="{{ 'placeholder.jpg' | asset_url }}" 
+      alt="Placeholder image" 
+      class="collection-image"
+    >
+  {% endif %}
+</div>

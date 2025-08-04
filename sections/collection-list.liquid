@@ -133,6 +133,30 @@
   </div>
 </div>
 
+{% comment %}
+  Ensure the slider-component renders correctly for mobile.
+  Add a fallback to disable the slider if needed.
+{% endcomment %}
+<div class="collection-list">
+  {% if section.settings.enable_slider %}
+    <div class="slider-component">
+      {% for collection in collections %}
+        <div class="slider-item">
+          {% render 'card-collection', collection: collection %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="collection-grid">
+      {% for collection in collections %}
+        <div class="collection-item">
+          {% render 'card-collection', collection: collection %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
 {% schema %}
 {
   "name": "t:sections.collection-list.name",

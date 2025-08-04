@@ -1,0 +1,38 @@
+/* Ensure slider images are visible on mobile */
+@media (max-width: 768px) {
+  .slider-component {
+    display: flex; /* Ensure the slider is displayed */
+    overflow-x: auto; /* Allow horizontal scrolling */
+  }
+
+  .slider-item {
+    flex: 0 0 auto; /* Prevent items from shrinking */
+    width: 80%; /* Adjust width for better visibility */
+    margin-right: 10px; /* Add spacing between items */
+  }
+
+  .card-collection img {
+    display: block; /* Ensure images are visible */
+    max-width: 100%; /* Prevent images from overflowing */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .collection-image {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Optional: Disable slider on mobile */
+@media (max-width: 768px) {
+  .slider-component {
+    display: none; /* Hide slider */
+  }
+
+  .collection-grid {
+    display: grid; /* Use grid layout as fallback */
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 10px; /* Add spacing between items */
+  }
+}
