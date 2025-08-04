@@ -4126,31 +4126,26 @@ details-disclosure > details {
 
 
 
-/* Remove border around the quantity input wrapper */
-#Quantity-Form-{{ section.id }},
 .product-form__quantity {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
 }
 
-/* Remove border from the number input itself */
-#Quantity-Form-{{ section.id }} .quantity__input,
 .product-form__quantity .quantity__input {
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
-}
-#Quantity-Form-{{ section.id }} .quantity__input {
   border-radius: 8px !important;
   padding: 8px 10px !important;
 }
+
 .product-form__quantity quantity-input .quantity__input {
   border: none !important;
   box-shadow: none !important;
   outline: none !important;
 }
-}
+
 
 @media (max-width: 768px) {
   /* Ensure product and collection images are visible */
