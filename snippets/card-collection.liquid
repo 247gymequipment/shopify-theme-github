@@ -51,7 +51,7 @@
     <div class="media media--transparent media--hover-effect">
       {%- if card_collection.featured_image -%}
         <img
-          src="{{ card_collection.featured_image | image_url: width: 1400 }}"
+          src="{{ card_collection.featured_image | image_url: width: 750 }}"
           srcset="
             {{ card_collection.featured_image | image_url: width: 330 }} 330w,
             {{ card_collection.featured_image | image_url: width: 750 }} 750w
