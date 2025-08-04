@@ -11,38 +11,14 @@
     margin-right: 10px; /* Add spacing between items */
   }
 
-  .card-collection img {
-    display: block; /* Ensure images are visible */
-    max-width: 100%; /* Prevent images from overflowing */
-    height: auto; /* Maintain aspect ratio */
-  }
-
-  .collection-image {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-
-  .collection-slider img {
-    visibility: visible !important;
-    display: block !important;
-  }
-
+  .card-collection img,
+  .collection-image,
+  .collection-slider img,
   img {
     display: block !important; /* Ensure images are visible */
     visibility: visible !important;
-  }
-}
-
-/* Optional: Disable slider on mobile */
-@media (max-width: 768px) {
-  .slider-component {
-    display: none; /* Hide slider */
-  }
-
-  .collection-grid {
-    display: grid; /* Use grid layout as fallback */
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 10px; /* Add spacing between items */
+    opacity: 1 !important; /* Ensure images are fully visible */
+    max-width: 100%; /* Prevent images from overflowing */
+    height: auto; /* Maintain aspect ratio */
   }
 }
